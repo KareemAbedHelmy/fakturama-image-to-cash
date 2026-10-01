@@ -1,10 +1,10 @@
 # Requirement coverage and acceptance plan
 
-Status describes observed work. “Core tested” means automated tests against a simulator or pure functions. It does not mean a Windows UI control has been exercised. Only the PDF brief was supplied; the order image is still needed.
+Status describes observed work. “Core tested” means automated tests against a simulator or pure functions. It does not mean a Windows UI control has been exercised. The supplied OrderImage.png has now been visually transcribed and validated. The user confirmed Windows Fakturama 2.2.0; its UI controls remain to be inspected.
 
 | Assignment rule | Implementation/test | Live acceptance still needed |
 | --- | --- | --- |
-| Single image input; extract every source field | Image sanitation, local OCR, schema-constrained local vision client; response tests mocked | Employer image, model accuracy, verified end-to-end image entrypoint |
+| Single image input; extract every source field | Image sanitation, local OCR, schema-constrained local vision client; reviewed supplied-image fixture and financial checks | Model accuracy, verified end-to-end image entrypoint; source OCR was inaccurate |
 | New Order first; retain proposed number | Workflow sequence and generated handle tested | Toolbar grounding, number readback |
 | Date, Cust.Ref., Net, With VAT | Snapshot comparison and simulator configuration | Native control identities and value/mode readback |
 | Retain same Order while creating masters | Original handle checked before each action; tab-loss test | Tab selection under nested editors/modal dialogs |
@@ -12,7 +12,7 @@ Status describes observed work. “Core tested” means automated tests against 
 | Exact Company/First Name/Name/ZIP/City | Deterministic matching; duplicate/conflict tests | Full stable, scrollable selector readout |
 | Address comparison after selecting | Complete billing/delivery comparison tested | UI address blocks, formatting, country locale |
 | New Debtor fields and automatic customer ID | Source contract and simulator master copy | Real editor fields, preserving ID; --- salutation when absent |
-| Address roles, alias, Net, zero discount | Separate addresses preserved in core | Role toggles and additional delivery address UI |
+| Address roles, alias, Net, zero discount | Separate addresses/recipient names preserved; actual warehouse recipient tested | Role toggles and additional delivery address UI |
 | Debtor payment dropdown, then terms branch | Available/reuse/create/conflict cases tested | Dropdown refresh and terms list definition inspection |
 | Exact payment mappings and zero defaults | Mapping and definition conflict tests | Description/account/texts/default flag and one toolbar save |
 | Reselect saved Debtor from Order | Missing-save/selector tests | Persisted selector row and populated addresses |

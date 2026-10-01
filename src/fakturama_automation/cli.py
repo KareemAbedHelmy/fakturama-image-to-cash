@@ -9,6 +9,7 @@ from decimal import Decimal
 from pathlib import Path
 
 from .domain import OrderInput
+from .diagnostics import capture_bundle
 from .errors import ReviewRequired
 from .extraction import extract_local_vision, local_ocr, sanitize_image
 from .finance import product_gross, validate_order
@@ -16,7 +17,7 @@ from .input_io import read_order, write_private
 from .journal import Journal
 from .matching import PAYMENT_CODES, PaymentRow, VatRow, vat_name
 from .simulator import Simulator
-from .uia import inspect_window, list_process_windows
+from .uia import discover_fakturama_windows, inspect_window, list_process_windows
 from .workflow import Workflow
 
 
@@ -60,6 +61,11 @@ def parser():
     inspect.add_argument("--out", type=Path, required=True)
     windows = commands.add_parser("windows", help="List windows in an explicit Windows process (read-only)")
     windows.add_argument("--pid", type=int, required=True)
+    commands.add_parser("discover", help="List visible Fakturama windows read-only; no PID needed")
+    capture = commands.add_parser("capture", help="Create a read-only Fakturama UIA diagnostic ZIP; no clicks or saves")
+    capture.add_argument("--label", required=True)
+    capture.add_argument("--out-dir", type=Path, default=Path("private/ui"))
+    capture.add_argument("--pid", type=int)
     live = commands.add_parser("run", help="Reserved live command; blocked until the desktop adapter is implemented")
     live.add_argument("--image", type=Path, required=True)
     return p
@@ -111,6 +117,12 @@ def execute(args):
         if args.pid <= 0:
             raise ReviewRequired("invalid_process_id")
         print(json.dumps(list_process_windows(args.pid), ensure_ascii=False, indent=2))
+    elif args.command == "discover":
+        print(json.dumps(discover_fakturama_windows(), ensure_ascii=False, indent=2))
+    elif args.command == "capture":
+        bundle = capture_bundle(args.label, args.out_dir, args.pid)
+        print(json.dumps({"status": "READ_ONLY_CAPTURE_WRITTEN", "bundle": str(bundle),
+                          "note": "Review the JSON files before sharing. No application data was changed."}))
 
 
 def main(argv=None):

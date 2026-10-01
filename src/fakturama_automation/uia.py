@@ -104,6 +104,7 @@ def inspect_window(pid: int, handle: int) -> dict:
         return {"name": info.name, "automation_id": info.automation_id,
                 "control_type": info.control_type, "class_name": info.class_name,
                 "visible": control.is_visible(), "enabled": control.is_enabled(),
+                "patterns": observed_patterns(control),
                 "rect": [rect.left, rect.top, rect.right, rect.bottom],
                 "children": [visit(child, depth+1) for child in control.children()[:500]]}
     return {"pid": pid, "window_handle": handle, "tree": visit(root, 0)}
@@ -119,3 +120,47 @@ def list_process_windows(pid: int) -> list[dict]:
     app = Application(backend="uia").connect(process=pid, timeout=10)
     return [{"name": window.element_info.name, "handle": window.handle,
              "pid": window.element_info.process_id} for window in app.windows()]
+
+
+def observed_patterns(control) -> dict:
+    """Read-only pattern availability and current values. Never invoke a pattern."""
+    result = {}
+    for name, iface, attributes in [
+        ("value", "iface_value", ("CurrentValue", "CurrentIsReadOnly")),
+        ("invoke", "iface_invoke", ()),
+        ("toggle", "iface_toggle", ("CurrentToggleState",)),
+        ("selection_item", "iface_selection_item", ("CurrentIsSelected",)),
+        ("expand_collapse", "iface_expand_collapse", ("CurrentExpandCollapseState",)),
+        ("grid", "iface_grid", ("CurrentRowCount", "CurrentColumnCount")),
+    ]:
+        try:
+            pattern = getattr(control, iface)
+            if pattern is None:
+                continue
+            observed = {attr: getattr(pattern, attr) for attr in attributes}
+            # COM values are expected to be strings/numbers/bools; don't serialize arbitrary objects.
+            result[name] = {key: value if isinstance(value, (str, int, float, bool, type(None))) else "unavailable"
+                            for key, value in observed.items()}
+        except Exception:
+            continue
+    return result
+
+
+def discover_fakturama_windows() -> list[dict]:
+    """Discovery is read-only; no automatic attachment/mutation of any candidate."""
+    if platform.system() != "Windows":
+        raise ReviewRequired("windows_required_for_uia")
+    try:
+        from pywinauto import Desktop
+    except ImportError:
+        raise ReviewRequired("windows_dependency_missing") from None
+    rows = []
+    for window in Desktop(backend="uia").windows():
+        try:
+            name = window.element_info.name
+            if "fakturama" in name.casefold() and window.is_visible():
+                rows.append({"name": name, "handle": window.handle,
+                             "pid": window.element_info.process_id})
+        except Exception:
+            continue
+    return rows

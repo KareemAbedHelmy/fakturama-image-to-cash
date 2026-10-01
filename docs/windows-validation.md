@@ -7,7 +7,7 @@
 3. Find the Fakturama process ID under Task Manager > Details. Use `windows --pid` to identify its actual UI window handle. If a Java subprocess owns the window, use that PID rather than assuming the launcher owns it.
 4. Open a New Order manually. Run `inspect --pid ... --window-handle ... --out private/order-uia.json`. Inspect accessible names, automation IDs, control types, parent scopes, and supported patterns. Do not invent IDs from the screenshots in the brief.
 5. Capture read-only trees for each selector and editor. Modal dialogs may have their own top-level handle; list process windows again while they are open. Keep the original Order tab open.
-6. Obtain the supplied order image and record a reviewed expected transcription privately. Compare OCR/vision output field-by-field. Resolve currency, separate delivery address, line-total basis, any order-level charges, and payment state before writes.
+6. Use the supplied OrderImage.png and the reviewed test transcription in `examples/order.provided.expected.json`. Compare OCR/vision output field-by-field to the image. Source customer ID is reference data: preserve Fakturama's automatically proposed new Debtor ID. Preserve the distinct delivery recipient rather than copying the Debtor company onto the warehouse address.
 
 ## Adapter implementation priorities
 

@@ -55,9 +55,9 @@ def validate_order(order: OrderInput) -> Totals:
     if order.totals != expected:
         raise ReviewRequired("source_totals_mismatch")
     # Repeated SKUs remain separate lines. Conflicting master descriptions/VAT require review.
-    masters: dict[str, tuple[str, Decimal]] = {}
+    masters: dict[str, tuple[str, Decimal, str | None]] = {}
     for item in order.items:
-        definition = (item.description, item.vat_percent)
+        definition = (item.description, item.vat_percent, item.unit)
         if item.sku in masters and masters[item.sku] != definition:
             raise ReviewRequired("repeated_sku_definition_conflict")
         masters[item.sku] = definition

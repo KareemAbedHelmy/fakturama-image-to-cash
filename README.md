@@ -2,7 +2,7 @@
 
 Python implementation of a guarded Order-first workflow, a four-page design document, local image/OCR tooling, and Windows UIA inspection primitives.
 
-**Current status: foundation milestone, not submission-ready desktop automation.** The complete business workflow runs against an in-memory simulator. The live Fakturama adapter, actual source-image extraction validation, and desktop screenshots/recording are pending. `run` exits with `live_adapter_not_implemented`; it never silently substitutes the simulator. No live Fakturama records have been created or verified by this repository.
+**Current status: foundation milestone, not submission-ready desktop automation.** The complete business workflow runs against an in-memory simulator. The supplied image has a visually reviewed test transcription; its totals and separate delivery recipient pass core checks. The live Fakturama adapter, automatic extraction accuracy, and desktop screenshots/recording are pending. `run` exits with `live_adapter_not_implemented`; it never silently substitutes the simulator. No live Fakturama records have been created or verified by this repository. The user confirmed Windows Fakturama 2.2.0.
 
 The assignment explicitly permits partial implementation in a five-hour timebox. This README distinguishes what is implemented from what is proposed so reviewers can assess the work honestly. Track actual time spent separately; do not present a later extended implementation as five hours of work.
 
@@ -20,6 +20,9 @@ The assignment explicitly permits partial implementation in a five-hour timebox.
 | `tests/` | Automated core, failure-injection, input, and UIA-helper tests |
 | `examples/order.synthetic.json` | Synthetic two-line, two-VAT-rate paid order; not the employer's image |
 | `examples/order.synthetic.png` | Synthetic image for local OCR smoke checks; not Fakturama evidence |
+| `examples/order.provided.expected.json` | Visually reviewed transcription of the supplied image, used only as a test oracle |
+| `docs/provided-order.md` | Source values, interpretation decisions, and extraction limitations |
+| `docs/start-on-windows.md` | Next steps and read-only UIA capture commands |
 | `docs/verification.md` | Recorded checks and their limits |
 
 ## Setup on Windows (PowerShell)
@@ -67,13 +70,21 @@ OCR produces text, not structured order data. For layout-aware extraction, an op
 .\.venv\Scripts\python.exe -m fakturama_automation.cli validate private/candidate.json
 ```
 
-The output is an **untrusted candidate**. Review each value against the image, including any missing field or `review_issues`, before desktop use. Structured output and matching totals do not prove OCR/model accuracy. The actual employer image and a live vision model have not been tested here. Prompt text in the image cannot request tools; the model has no shell or desktop access.
+The output is an **untrusted candidate**. Review each value against the image, including any missing field or `review_issues`, before desktop use. Structured output and matching totals do not prove OCR/model accuracy. The actual supplied image was visually reviewed and tried with local OCR; OCR was inaccurate at its 385x529 resolution. A live vision model has not been tested here. Prompt text in the image cannot request tools; the model has no shell or desktop access. The reviewed example is test data, not an image-hash lookup or hardcoded extraction path.
 
 Inputs: PNG/JPEG, single frame, at most 10 MiB and 20 million pixels. JSON at most 1 MiB; up to 100 lines. Money/percent/quantity are decimal strings, with up to six decimals, no exponent or thousands separator. Dates use `YYYY-MM-DD`. Exact data fields reject unknown keys, control characters, duplicate JSON keys, negative/non-finite numbers, and invalid percentages. Optional absent text is null. Source line totals must be explicitly net; gross-only or unclear line totals need review.
 
 Initially supported: EUR; Bank Transfer, Credit Card, SEPA Direct Debit; PAID with payment date or UNPAID without date; zero order-level discount and shipping. Unknown/partial payment, other currencies, nonzero shipping/order discounts, and conflicting repeated-SKU definitions stop for review. These are documented limitations, not silent defaults. Separate billing/delivery addresses are represented and tested in the core; live address-role handling remains to be implemented.
 
 ## Windows UI inspection
+
+For the current next step, open Fakturama's New Order and capture its accessible controls without finding process IDs manually:
+
+```powershell
+.\.venv\Scripts\python.exe -m fakturama_automation.cli capture --label new-order
+```
+
+The command detects a single visible Fakturama process and captures only that process's visible windows into a ZIP under `private/ui/`. It does not focus, click, type, save, or take screenshots. JSON includes readable field values and supported UIA patterns, so inspect it before sharing. If more than one Fakturama process exists, run `discover` and supply the observed `--pid`. Detailed staged instructions are in `docs/start-on-windows.md`.
 
 Find the actual Fakturama process ID in Task Manager (Details). List only that process's windows, then use the returned native window handle:
 

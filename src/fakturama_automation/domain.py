@@ -67,6 +67,7 @@ class Address(StrictModel):
     zip: RequiredText
     city: RequiredText
     country: RequiredText
+    recipient_name: Text | None = None
     additional_name: Text | None = None
     specification: Text | None = None
     district: Text | None = None
@@ -112,6 +113,7 @@ class Item(StrictModel):
     vat_percent: Percent
     discount_percent: Percent
     source_line_net: Amount
+    unit: Text | None = None
 
 
 class Totals(StrictModel):
@@ -123,6 +125,7 @@ class Totals(StrictModel):
 class OrderInput(StrictModel):
     order_date: ISODate
     external_reference: Identifier
+    source_customer_id: Identifier | None = None
     currency: Literal["EUR"]
     debtor: Debtor
     payment: Payment

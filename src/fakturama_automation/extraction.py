@@ -94,6 +94,10 @@ if the meaning is unclear, flag it in review_issues. Don't fabricate missing
 source fields, names, dates, countries, addresses, currency or payment status.
 An explicitly identical delivery address may be copied from billing. Optional
 absent text is null; absent company or contact-name component is an empty string.
+Preserve the customer ID as source_customer_id, never as a request to replace an
+application-generated ID. Preserve each printed address recipient separately in
+recipient_name; do not replace a warehouse recipient with the Debtor company.
+Preserve the printed item unit in unit. Do not infer the unit if it is absent.
 Use zero discount/shipping only if source clearly indicates none or omits them
 without conflicting totals. Only supported currency is EUR; other currencies
 must remain as read (schema validation will reject them). Only methods Bank
