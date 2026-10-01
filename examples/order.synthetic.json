@@ -1,0 +1,43 @@
+{
+  "order_date": "2026-09-30",
+  "external_reference": "SYNTHETIC-PO-1001",
+  "currency": "EUR",
+  "debtor": {
+    "company": "Example Pharmacy GmbH",
+    "first_name": "Alex",
+    "last_name": "Example",
+    "alias": "Example Pharmacy",
+    "salutation": null,
+    "billing": {
+      "street": "Example Street 10",
+      "zip": "10115",
+      "city": "Berlin",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "accounts@example.invalid",
+      "telephone": null
+    },
+    "delivery": {
+      "street": "Example Street 10",
+      "zip": "10115",
+      "city": "Berlin",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "accounts@example.invalid",
+      "telephone": null
+    }
+  },
+  "payment": {"method": "Bank Transfer", "status": "PAID", "date": "2026-10-01"},
+  "items": [
+    {"sku": "EX-019", "description": "Synthetic Standard Item", "quantity": "2", "unit_net": "100.00", "vat_percent": "19", "discount_percent": "10", "source_line_net": "180.00"},
+    {"sku": "EX-007", "description": "Synthetic Reduced Item", "quantity": "3", "unit_net": "20.00", "vat_percent": "7", "discount_percent": "0", "source_line_net": "60.00"}
+  ],
+  "order_discount_percent": "0",
+  "shipping_net": "0.00",
+  "totals": {"net": "240.00", "vat": "38.40", "gross": "278.40"},
+  "review_issues": []
+}
