@@ -1,7 +1,7 @@
 """In-memory contract simulator. NOT a Fakturama desktop implementation.
 
 Tracks editor/selector identity, persists copies only on save, and supports
-failure injection so verification and crash behavior can be tested honestly.
+failure injection so verification and crash behavior.
 """
 
 from dataclasses import dataclass, replace
@@ -10,8 +10,8 @@ from decimal import Decimal
 
 from .domain import Debtor, Item, OrderInput
 from .errors import ReviewRequired
-from .finance import calculate_totals, line_net
-from .matching import DebtorRow, PaymentRow, ProductRow, VatRow
+from .finance import calculate_totals, line_net, product_gross
+from .matching import PAYMENT_CODES, DebtorRow, PaymentRow, ProductRow, VatRow, vat_name
 from .ports import Handle, Snapshot
 
 
@@ -267,3 +267,15 @@ class Simulator:
         self.call("read_saved_document")
         self.check((kind, number) in self.documents, "document_not_saved")
         return self.documents[(kind, number)]
+
+
+def seed_simulator(sim: Simulator, source: OrderInput, mode: str):
+    if mode in {"existing", "mixed"}:
+        sim.seed_debtor(source.debtor)
+        sim.payments.append(PaymentRow("1", source.payment.method, PAYMENT_CODES[source.payment.method], Decimal("0"), 0, 0))
+        selected_items = source.items if mode == "existing" else source.items[:1]
+        for item in selected_items:
+            if not any(p.row.sku == item.sku for p in sim.products):
+                sim.seed_product(item, product_gross(item))
+            if not any(v.name == vat_name(item.vat_percent) for v in sim.vats):
+                sim.vats.append(VatRow(str(len(sim.vats)+1), vat_name(item.vat_percent), item.vat_percent, "S"))

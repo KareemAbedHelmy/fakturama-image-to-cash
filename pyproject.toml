@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fakturama-image-to-cash"
 version = "0.1.0"
-description = "Guarded Order-first Fakturama automation core and Windows inspection tooling"
+description = "Order-first Fakturama automation: order image to a saved Order and a paid, linked Invoice (Windows UI Automation)"
 requires-python = ">=3.11"
 dependencies = ["pydantic==2.13.5", "Pillow==12.3.0"]
 

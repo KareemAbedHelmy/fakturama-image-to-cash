@@ -1,0 +1,3007 @@
+{
+  "nodes": [
+    {
+      "path": [],
+      "handle": 3080528,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0
+      ],
+      "handle": 1966580,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        0
+      ],
+      "handle": 393750,
+      "class_name": "SysTreeView32",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1
+      ],
+      "handle": 656752,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0
+      ],
+      "handle": 852430,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        1,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        3
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        3,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        3,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        3,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        3,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        3,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        4
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        4,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        4,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        5
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        0,
+        6
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        1
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        3
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        4
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        4,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        4,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        4,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        4,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        4,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        5
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        5,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        5,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        6
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        7
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        1,
+        8
+      ],
+      "handle": 855816,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2
+      ],
+      "handle": 852430,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        0
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        1,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        2
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        3
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        3,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        3,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        3,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        3,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        3,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        4
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        4,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        4,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        5
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        2,
+        6
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        3
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        4,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        5
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        6
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        6,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        6,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        6,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        6,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        6,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        7
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        7,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        7,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        8
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        9
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        0,
+        10
+      ],
+      "handle": 855816,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        1
+      ],
+      "handle": 393750,
+      "class_name": "SysTreeView32",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2
+      ],
+      "handle": 656752,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0
+      ],
+      "handle": 852430,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        0
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        1,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        2
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        3
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        3,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        3,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        3,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        3,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        3,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        4
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        4,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        4,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        5
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        0,
+        6
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        1
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        2,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        3
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        4
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        4,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        4,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        4,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        4,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        4,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        5
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        5,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        5,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        6
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        7
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        2,
+        8
+      ],
+      "handle": 855816,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3
+      ],
+      "handle": 852430,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        0
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        1,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        2
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        3
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        3,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        3,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        3,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        3,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        3,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        4
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        4,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        4,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        5
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        3,
+        6
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        4
+      ],
+      "handle": 1312230,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5
+      ],
+      "handle": 918000,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        0
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        1
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        1,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        1,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        1,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        1,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        1,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        2
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        2,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        2,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        3
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        5,
+        4
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        6
+      ],
+      "handle": 16125774,
+      "class_name": "Static",
+      "name": "Search:",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        7
+      ],
+      "handle": 656124,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        7,
+        0
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        7,
+        0,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        7,
+        0,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        7,
+        1
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        7,
+        2
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        8
+      ],
+      "handle": 10490140,
+      "class_name": "Edit",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        8,
+        0
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        8,
+        1
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        9
+      ],
+      "handle": 2295198,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    },
+    {
+      "path": [
+        10
+      ],
+      "handle": 10555714,
+      "class_name": "Static",
+      "name": "",
+      "text_truncated": false,
+      "visible": false,
+      "enabled": true
+    },
+    {
+      "path": [
+        11
+      ],
+      "handle": 855816,
+      "class_name": "SWT_Window0",
+      "name": "",
+      "text_truncated": false,
+      "visible": true,
+      "enabled": true
+    }
+  ],
+  "truncated": false
+}

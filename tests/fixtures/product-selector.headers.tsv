@@ -1,0 +1,9 @@
+level	page_num	block_num	par_num	line_num	word_num	left	top	width	height	conf	text
+1	1	0	0	0	0	0	0	2048	1009	-1	
+5	1	13	1	1	1	300	231	38	14	92.064247	Item
+5	1	13	1	1	2	346	231	29	14	96.731972	No.
+5	1	14	1	1	1	469	231	51	14	96.311165	Name
+5	1	15	1	1	1	638	230	99	20	96.452736	Description
+5	1	16	1	1	1	806	229	48	16	96.963219	Stock
+5	1	17	1	1	1	975	230	42	15	96.785545	Price
+5	1	18	1	1	1	1143	231	34	14	78.594269	VAT

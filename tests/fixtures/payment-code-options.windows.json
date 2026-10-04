@@ -1,0 +1,41 @@
+{
+  "status": "OBSERVED_NEW_PAYMENT_EDITOR_ONLY",
+  "standard_name": "Cash",
+  "source_order_tab_present": true,
+  "source_debtor_tab_present": true,
+  "source_order_number_verified": false,
+  "source_debtor_id_verified": false,
+  "values": {
+    "name": "",
+    "account": "",
+    "description": "",
+    "cash_discount": "0%",
+    "discount_days": "0",
+    "net_days": "0",
+    "unpaid_text": "",
+    "deposit_text": "",
+    "paid_text": "",
+    "code": "Mutually defined "
+  },
+  "note": "Read-only editor fields; inactive Order/Debtor identities and saved payment terms remain unverified.",
+  "payment_code_options": {
+    "status": "OBSERVED_NATIVE_COMBO_OPTIONS_ONLY",
+    "options": [
+      "In cash ",
+      "Credit transfer ",
+      "Debit transfer ",
+      "Bank card ",
+      "Direct debit ",
+      "Credit card ",
+      "Debit card ",
+      "Standing agreement ",
+      "SEPA credit transfer ",
+      "SEPA direct debit ",
+      "Online payment service ",
+      "Mutually defined "
+    ],
+    "selected_index": 11,
+    "current_value": "Mutually defined ",
+    "note": "Current dropdown entries only; term definitions and completed master lookup are unverified."
+  }
+}

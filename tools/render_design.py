@@ -1,6 +1,7 @@
 """Optional PDF renderer (requires reportlab); run from any working directory."""
 
 import os
+import re
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -8,7 +9,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import PageBreak, Paragraph, SimpleDocTemplate
+from reportlab.platypus import Paragraph, SimpleDocTemplate
 
 root = Path(__file__).resolve().parents[1]
 font_candidates = [Path("/usr/share/fonts/truetype/dejavu"), Path(os.environ.get("WINDIR", "C:/Windows"))/"Fonts"]
@@ -31,27 +32,43 @@ styles["Heading2"].leading = 17
 for name in ["Heading1", "Heading2"]:
     styles[name].textColor = colors.HexColor("#173e63")
 
-sections = (root / "docs/design.md").read_text().split("\n## ")
+sections = (root / "docs/design.md").read_text(encoding="utf-8").split("\n## ")
 story = [Paragraph("Fakturama Image-to-Cash Automation", styles["Heading1"]),
-         Paragraph("Proposed design | Kareem Abed | 1 October 2026", styles["BodyCustom"])]
+         Paragraph("Design | Kareem Abed", styles["BodyCustom"])]
+styles.add(ParagraphStyle(name="ItemCustom", parent=styles["BodyCustom"], leftIndent=14,
+                          firstLineIndent=-10, spaceAfter=4))
+LIST = re.compile(r"^(- |\d+\. )")
 
 
-def section(content, new_page=False):
-    if new_page:
-        story.append(PageBreak())
+def blocks(body):
+    """Paragraphs and list items; hard-wrapped lines are joined back together."""
+    for chunk in body.strip().split("\n\n"):
+        items, current = [], None
+        for line in chunk.split("\n"):
+            if LIST.match(line):
+                current = [line]
+                items.append(current)
+            elif current is not None:
+                current.append(line.strip())
+            else:
+                items.append([line])
+        if LIST.match(items[0][0]):
+            for item in items:
+                yield "ItemCustom", " ".join(item)
+        else:
+            yield "BodyCustom", " ".join(" ".join(i) for i in items)
+
+
+def section(content):
     title, body = content.split("\n", 1)
     story.append(Paragraph(escape(title), styles["Heading2"]))
-    for paragraph in body.strip().split("\n\n"):
-        story.append(Paragraph(escape(paragraph), styles["BodyCustom"]))
+    for style, text in blocks(body):
+        text = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", escape(text))
+        story.append(Paragraph(text, styles[style]))
 
 
-section(sections[1])
-section(sections[2])
-title, body = sections[3].split("\n", 1)
-paragraphs = body.strip().split("\n\n")
-section(title + "\n" + "\n\n".join(paragraphs[:4]), True)
-section("3. Desktop workflow (continued)\n" + "\n\n".join(paragraphs[4:]), True)
-section(sections[4], True)
+for content in sections[1:]:
+    section(content)
 
 
 def footer(canvas, document):

@@ -11,20 +11,53 @@ class Control:
         self.visible, self.enabled = visible, enabled
         self.value = ""
         self.invocations = 0
+        self.container = None
 
     def is_visible(self): return self.visible
     def is_enabled(self): return self.enabled
     def set_edit_text(self, value): self.value = value
     def get_value(self): return self.value
     def invoke(self): self.invocations += 1
+    def parent(self): return self.container
 
 
 class Scope:
-    def __init__(self, controls): self.controls = controls
+    def __init__(self, controls, enabled=True):
+        self.controls = controls
+        self.enabled = enabled
+        for control in controls:
+            control.container = self
     def descendants(self, **kwargs): return self.controls
+    def is_enabled(self): return self.enabled
 
 
 class UIATests(unittest.TestCase):
+    def test_enabled_child_of_disabled_toolbar_not_invoked(self):
+        control = Control("Invoice")
+        scope = Scope([control])
+        toolbar = Control("Toolbar", enabled=False)
+        toolbar.container = scope
+        control.container = toolbar
+        with self.assertRaisesRegex(ReviewRequired, "control_missing_or_ambiguous"):
+            invoke_once(scope, Locator("Button", name="Invoice"))
+        self.assertEqual(control.invocations, 0)
+
+    def test_detached_control_not_invoked(self):
+        control = Control("Save")
+        scope = Scope([control])
+        control.container = None
+        with self.assertRaisesRegex(ReviewRequired, "control_missing_or_ambiguous"):
+            invoke_once(scope, Locator("Button", name="Save"))
+        self.assertEqual(control.invocations, 0)
+
+    def test_unreadable_ancestor_blocks_without_invocation(self):
+        class Unreadable(Control):
+            def parent(self): raise RuntimeError("unavailable")
+        control = Unreadable("Save")
+        with self.assertRaisesRegex(ReviewRequired, "control_ancestry_unavailable"):
+            invoke_once(Scope([control]), Locator("Button", name="Save"))
+        self.assertEqual(control.invocations, 0)
+
     def test_exact_identity_required(self):
         with self.assertRaises(ValueError):
             Locator("Button")

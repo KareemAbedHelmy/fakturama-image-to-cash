@@ -1,0 +1,1854 @@
+<!doctype html><html lang="en"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'">
+<title>Fakturama reviewer demo — simulator only</title>
+<style>body{font:16px/1.6 system-ui,sans-serif;max-width:1050px;margin:40px auto;padding:0 24px;color:#15293c}
+h1{line-height:1.2}aside{padding:18px;background:#fff1cf;border-left:5px solid #c88400}table{border-collapse:collapse;width:100%;margin:24px 0}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #cad4df}th{background:#ecf2f8}details{margin:12px 0;border:1px solid #cad4df;padding:12px}
+pre{overflow:auto;font:13px/1.5 monospace}footer{margin-top:32px;color:#526373}</style>
+<h1>Fakturama Image-to-Cash<br>Reviewer demo</h1>
+<aside><strong>SIMULATOR ONLY — reviewed JSON input.</strong> No image extraction or Fakturama
+records are demonstrated here. “Verified” refers to the in-memory business workflow and its local
+journal. The live Fakturama runs are described in docs/live-run.md.</aside>
+<p><strong>Net 570.00 · VAT 108.30 · Gross 678.30 EUR</strong></p>
+<p>The demo uses the normal workflow and journal. Failure scenarios pass when the expected
+review stop occurs. The unpaid and invalid-total inputs are explicitly derived demonstrations.</p>
+<table><thead><tr><th>Scenario</th><th>Expected outcome</th><th>Observed outcome</th><th>Order / Invoice saves</th></tr></thead><tbody><tr><td>missing</td><td>VERIFIED</td><td>verified</td><td>1 / 1</td></tr><tr><td>existing</td><td>VERIFIED</td><td>verified</td><td>1 / 1</td></tr><tr><td>mixed</td><td>VERIFIED</td><td>verified</td><td>1 / 1</td></tr><tr><td>derived_unpaid</td><td>VERIFIED</td><td>verified</td><td>1 / 1</td></tr><tr><td>duplicate_debtor</td><td>REVIEW_REQUIRED</td><td>ambiguous_debtor</td><td>0 / 0</td></tr><tr><td>duplicate_product</td><td>REVIEW_REQUIRED</td><td>ambiguous_product</td><td>0 / 0</td></tr><tr><td>uncertain_order_save</td><td>REVIEW_REQUIRED</td><td>simulated_failure_after_action</td><td>1 / 0</td></tr><tr><td>invalid_totals</td><td>REVIEW_REQUIRED</td><td>source_totals_mismatch</td><td>0 / 0</td></tr></tbody></table>
+<h2>Inspect the execution</h2><details><summary>missing — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;open_debtor_editor&quot;,
+    &quot;debtor_payment_options&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;create_payment_term&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;save_debtor&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;select_debtor&quot;,
+    &quot;verify_addresses&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_vat&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_order&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;create_followup_invoice&quot;,
+    &quot;read_editor&quot;,
+    &quot;apply_invoice_payment&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_invoice&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;read_saved_document&quot;,
+    &quot;find_document_rows&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    }
+  ],
+  &quot;documents&quot;: [
+    {
+      &quot;kind&quot;: &quot;Order&quot;,
+      &quot;number&quot;: &quot;O00001&quot;,
+      &quot;state&quot;: &quot;open&quot;,
+      &quot;source_order_number&quot;: null,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: false,
+      &quot;payment_method&quot;: null,
+      &quot;payment_date&quot;: null,
+      &quot;payment_value&quot;: null,
+      &quot;separate_address_values_preserved&quot;: true
+    },
+    {
+      &quot;kind&quot;: &quot;Invoice&quot;,
+      &quot;number&quot;: &quot;I00001&quot;,
+      &quot;state&quot;: &quot;paid&quot;,
+      &quot;source_order_number&quot;: &quot;O00001&quot;,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: true,
+      &quot;payment_method&quot;: &quot;Bank Transfer&quot;,
+      &quot;payment_date&quot;: &quot;2026-07-18&quot;,
+      &quot;payment_value&quot;: &quot;678.30&quot;,
+      &quot;separate_address_values_preserved&quot;: true
+    }
+  ],
+  &quot;duplicate_replay_error&quot;: &quot;duplicate_job&quot;,
+  &quot;retained_lease_count&quot;: 0
+}</pre></details><details><summary>existing — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;select_debtor&quot;,
+    &quot;verify_addresses&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_order&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;create_followup_invoice&quot;,
+    &quot;read_editor&quot;,
+    &quot;apply_invoice_payment&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_invoice&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;read_saved_document&quot;,
+    &quot;find_document_rows&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    }
+  ],
+  &quot;documents&quot;: [
+    {
+      &quot;kind&quot;: &quot;Order&quot;,
+      &quot;number&quot;: &quot;O00001&quot;,
+      &quot;state&quot;: &quot;open&quot;,
+      &quot;source_order_number&quot;: null,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: false,
+      &quot;payment_method&quot;: null,
+      &quot;payment_date&quot;: null,
+      &quot;payment_value&quot;: null,
+      &quot;separate_address_values_preserved&quot;: true
+    },
+    {
+      &quot;kind&quot;: &quot;Invoice&quot;,
+      &quot;number&quot;: &quot;I00001&quot;,
+      &quot;state&quot;: &quot;paid&quot;,
+      &quot;source_order_number&quot;: &quot;O00001&quot;,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: true,
+      &quot;payment_method&quot;: &quot;Bank Transfer&quot;,
+      &quot;payment_date&quot;: &quot;2026-07-18&quot;,
+      &quot;payment_value&quot;: &quot;678.30&quot;,
+      &quot;separate_address_values_preserved&quot;: true
+    }
+  ],
+  &quot;duplicate_replay_error&quot;: null,
+  &quot;retained_lease_count&quot;: 0
+}</pre></details><details><summary>mixed — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;select_debtor&quot;,
+    &quot;verify_addresses&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_order&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;create_followup_invoice&quot;,
+    &quot;read_editor&quot;,
+    &quot;apply_invoice_payment&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_invoice&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;read_saved_document&quot;,
+    &quot;find_document_rows&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    }
+  ],
+  &quot;documents&quot;: [
+    {
+      &quot;kind&quot;: &quot;Order&quot;,
+      &quot;number&quot;: &quot;O00001&quot;,
+      &quot;state&quot;: &quot;open&quot;,
+      &quot;source_order_number&quot;: null,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: false,
+      &quot;payment_method&quot;: null,
+      &quot;payment_date&quot;: null,
+      &quot;payment_value&quot;: null,
+      &quot;separate_address_values_preserved&quot;: true
+    },
+    {
+      &quot;kind&quot;: &quot;Invoice&quot;,
+      &quot;number&quot;: &quot;I00001&quot;,
+      &quot;state&quot;: &quot;paid&quot;,
+      &quot;source_order_number&quot;: &quot;O00001&quot;,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: true,
+      &quot;payment_method&quot;: &quot;Bank Transfer&quot;,
+      &quot;payment_date&quot;: &quot;2026-07-18&quot;,
+      &quot;payment_value&quot;: &quot;678.30&quot;,
+      &quot;separate_address_values_preserved&quot;: true
+    }
+  ],
+  &quot;duplicate_replay_error&quot;: null,
+  &quot;retained_lease_count&quot;: 0
+}</pre></details><details><summary>derived_unpaid — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;open_debtor_editor&quot;,
+    &quot;debtor_payment_options&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;create_payment_term&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;save_debtor&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;select_debtor&quot;,
+    &quot;verify_addresses&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_vat&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_order&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;create_followup_invoice&quot;,
+    &quot;read_editor&quot;,
+    &quot;apply_invoice_payment&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_invoice&quot;,
+    &quot;find_document_rows&quot;,
+    &quot;read_saved_document&quot;,
+    &quot;find_document_rows&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_order_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;followup_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_invoice_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;set_invoice_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_invoice_editor_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_saved_invoice_row&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_saved_invoice&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_source_order_final&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    }
+  ],
+  &quot;documents&quot;: [
+    {
+      &quot;kind&quot;: &quot;Order&quot;,
+      &quot;number&quot;: &quot;O00001&quot;,
+      &quot;state&quot;: &quot;open&quot;,
+      &quot;source_order_number&quot;: null,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: false,
+      &quot;payment_method&quot;: null,
+      &quot;payment_date&quot;: null,
+      &quot;payment_value&quot;: null,
+      &quot;separate_address_values_preserved&quot;: true
+    },
+    {
+      &quot;kind&quot;: &quot;Invoice&quot;,
+      &quot;number&quot;: &quot;I00001&quot;,
+      &quot;state&quot;: &quot;unpaid&quot;,
+      &quot;source_order_number&quot;: &quot;O00001&quot;,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: false,
+      &quot;payment_method&quot;: &quot;Bank Transfer&quot;,
+      &quot;payment_date&quot;: null,
+      &quot;payment_value&quot;: null,
+      &quot;separate_address_values_preserved&quot;: true
+    }
+  ],
+  &quot;duplicate_replay_error&quot;: null,
+  &quot;retained_lease_count&quot;: 0
+}</pre></details><details><summary>duplicate_debtor — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    }
+  ],
+  &quot;documents&quot;: [],
+  &quot;duplicate_replay_error&quot;: null,
+  &quot;retained_lease_count&quot;: 1
+}</pre></details><details><summary>duplicate_product — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;open_debtor_editor&quot;,
+    &quot;debtor_payment_options&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;create_payment_term&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;save_debtor&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;select_debtor&quot;,
+    &quot;verify_addresses&quot;,
+    &quot;search_products_from_order&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    }
+  ],
+  &quot;documents&quot;: [],
+  &quot;duplicate_replay_error&quot;: null,
+  &quot;retained_lease_count&quot;: 1
+}</pre></details><details><summary>uncertain_order_save — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [
+    &quot;preflight&quot;,
+    &quot;open_new_order&quot;,
+    &quot;configure_order&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;open_debtor_editor&quot;,
+    &quot;debtor_payment_options&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;create_payment_term&quot;,
+    &quot;search_payment_terms&quot;,
+    &quot;save_debtor&quot;,
+    &quot;search_debtors_from_order&quot;,
+    &quot;select_debtor&quot;,
+    &quot;verify_addresses&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_vat&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;cancel_selector&quot;,
+    &quot;search_vats&quot;,
+    &quot;create_product&quot;,
+    &quot;search_products_from_order&quot;,
+    &quot;select_product&quot;,
+    &quot;complete_line&quot;,
+    &quot;read_editor&quot;,
+    &quot;save_order&quot;
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;preflight&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;configure_order&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_debtor_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;open_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;debtor_payment_options&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_payment_terms&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_payment&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_payment_term&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_debtor_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_debtor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_addresses&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;verify_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;cancel_product_selector&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;search_vat&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;create_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;reselect_product_search&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;select_product&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;complete_line&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;read_order_editor&quot;,
+      &quot;status&quot;: &quot;OBSERVED&quot;
+    },
+    {
+      &quot;stage&quot;: &quot;save_order&quot;,
+      &quot;status&quot;: &quot;INTENT&quot;
+    }
+  ],
+  &quot;documents&quot;: [
+    {
+      &quot;kind&quot;: &quot;Order&quot;,
+      &quot;number&quot;: &quot;O00001&quot;,
+      &quot;state&quot;: &quot;open&quot;,
+      &quot;source_order_number&quot;: null,
+      &quot;net&quot;: &quot;570.00&quot;,
+      &quot;vat&quot;: &quot;108.30&quot;,
+      &quot;gross&quot;: &quot;678.30&quot;,
+      &quot;paid&quot;: false,
+      &quot;payment_method&quot;: null,
+      &quot;payment_date&quot;: null,
+      &quot;payment_value&quot;: null,
+      &quot;separate_address_values_preserved&quot;: true
+    }
+  ],
+  &quot;duplicate_replay_error&quot;: &quot;duplicate_job&quot;,
+  &quot;retained_lease_count&quot;: 1
+}</pre></details><details><summary>invalid_totals — action and journal trace</summary><pre>{
+  &quot;calls&quot;: [],
+  &quot;events&quot;: [],
+  &quot;documents&quot;: [],
+  &quot;duplicate_replay_error&quot;: null,
+  &quot;retained_lease_count&quot;: 0
+}</pre></details>
+<footer>Simulator report only: the live Fakturama runs are described in docs/live-run.md. Each scenario uses its own journal.</footer></html>

@@ -60,7 +60,6 @@ def local_ocr(clean_png: bytes, executable: Path, language: str = "eng") -> str:
         raise ReviewRequired("ocr_executable_requires_absolute_existing_path")
     if not re.fullmatch(r"[a-z]{3}(?:\+[a-z]{3}){0,3}", language):
         raise ReviewRequired("invalid_ocr_language")
-    # No shell, source names are never command arguments, and temporary files are removed.
     with tempfile.TemporaryDirectory(prefix="fakturama-ocr-") as folder:
         image = Path(folder) / "input.png"
         output = Path(folder) / "ocr"
@@ -147,3 +146,50 @@ def extract_local_vision(clean_png: bytes, model: str) -> OrderInput:
     if not isinstance(content, str):
         raise ReviewRequired("vision_invalid_response")
     return parse_order(content)
+
+
+CLAUDE_HOST = "api.anthropic.com"
+CLAUDE_DEFAULT_MODEL = "claude-opus-5-5"
+
+
+def extract_claude_vision(clean_png: bytes, model: str = CLAUDE_DEFAULT_MODEL, *, api_key: str,
+                          connection_factory=None) -> OrderInput:
+    """Opt-in Claude vision extraction. Sends the sanitized image to Anthropic.
+
+    The schema is a forced tool, so the reply is structured JSON; it is still
+    untrusted candidate data: schema parsing, financial validation and review
+    happen afterwards. No tool is executed; the tool only carries the result.
+    """
+    if not re.fullmatch(r"claude-[a-z0-9.-]{1,60}", model):
+        raise ReviewRequired("invalid_claude_model_name")
+    if not isinstance(api_key, str) or not api_key.strip():
+        raise ReviewRequired("anthropic_api_key_missing")
+    payload = {
+        "model": model, "max_tokens": 4096, "system": SYSTEM_PROMPT,
+        "tools": [{"name": "record_order", "description": "Record the extracted order exactly as printed.",
+                   "input_schema": OrderInput.model_json_schema()}],
+        "tool_choice": {"type": "tool", "name": "record_order"},
+        "messages": [{"role": "user", "content": [
+            {"type": "image", "source": {"type": "base64", "media_type": "image/png",
+                                         "data": base64.b64encode(clean_png).decode("ascii")}},
+            {"type": "text", "text": "Extract this order image. Flag uncertain values in review_issues."}]}],
+    }
+    connection = (connection_factory or (lambda: http.client.HTTPSConnection(CLAUDE_HOST, timeout=180)))()
+    try:
+        connection.request("POST", "/v1/messages", body=json.dumps(payload).encode(),
+                           headers={"Content-Type": "application/json", "x-api-key": api_key.strip(),
+                                    "anthropic-version": "2023-06-01"})
+        response = connection.getresponse()
+        data = response.read(MAX_JSON_BYTES + 1)
+        if response.status != 200:
+            raise ReviewRequired(f"claude_http_{response.status}")
+    except (OSError, http.client.HTTPException):
+        raise ReviewRequired("claude_unavailable") from None
+    finally:
+        connection.close()
+    envelope = parse_json(data)
+    blocks = [b for b in envelope.get("content", []) if isinstance(b, dict)
+              and b.get("type") == "tool_use" and b.get("name") == "record_order"] if isinstance(envelope, dict) else []
+    if len(blocks) != 1 or not isinstance(blocks[0].get("input"), dict):
+        raise ReviewRequired("claude_invalid_response")
+    return parse_order(json.dumps(blocks[0]["input"]))

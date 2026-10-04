@@ -1,0 +1,2870 @@
+{
+  "name": "Fakturama - SYNTHETIC_WORKSPACE",
+  "automation_id": "",
+  "control_type": "Window",
+  "class_name": "SWT_Window0",
+  "visible": true,
+  "enabled": true,
+  "patterns": {},
+  "rect": [
+    -16,
+    -16,
+    3856,
+    2296
+  ],
+  "children": [
+    {
+      "name": "",
+      "automation_id": "786524",
+      "control_type": "Pane",
+      "class_name": "SWT_Window0",
+      "visible": true,
+      "enabled": true,
+      "patterns": {},
+      "rect": [
+        0,
+        245,
+        3840,
+        2281
+      ],
+      "children": [
+        {
+          "name": "",
+          "automation_id": "527718",
+          "control_type": "Pane",
+          "class_name": "SWT_Window0",
+          "visible": true,
+          "enabled": true,
+          "patterns": {},
+          "rect": [
+            0,
+            245,
+            3840,
+            2281
+          ],
+          "children": [
+            {
+              "name": "Fakturama Perspective",
+              "automation_id": "789602",
+              "control_type": "Pane",
+              "class_name": "SWT_Window0",
+              "visible": true,
+              "enabled": true,
+              "patterns": {},
+              "rect": [
+                0,
+                245,
+                3840,
+                2281
+              ],
+              "children": [
+                {
+                  "name": "",
+                  "automation_id": "1114492",
+                  "control_type": "Pane",
+                  "class_name": "SWT_Window0",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {},
+                  "rect": [
+                    0,
+                    245,
+                    3840,
+                    2281
+                  ],
+                  "children": [
+                    {
+                      "name": "Navigation View",
+                      "automation_id": "1771836",
+                      "control_type": "Pane",
+                      "class_name": "SWT_Window0",
+                      "visible": true,
+                      "enabled": true,
+                      "patterns": {},
+                      "rect": [
+                        0,
+                        245,
+                        766,
+                        2281
+                      ],
+                      "children": [
+                        {
+                          "name": "",
+                          "automation_id": "986814",
+                          "control_type": "Pane",
+                          "class_name": "SWT_Window0",
+                          "visible": true,
+                          "enabled": true,
+                          "patterns": {},
+                          "rect": [
+                            0,
+                            245,
+                            766,
+                            2281
+                          ],
+                          "children": [
+                            {
+                              "name": "",
+                              "automation_id": "396736",
+                              "control_type": "Pane",
+                              "class_name": "SWT_Window0",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                10,
+                                255,
+                                756,
+                                405
+                              ],
+                              "children": [
+                                {
+                                  "name": "Web Shop",
+                                  "automation_id": "331190",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    333,
+                                    214,
+                                    387
+                                  ],
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "name": "",
+                              "automation_id": "787708",
+                              "control_type": "Pane",
+                              "class_name": "SWT_Window0",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                10,
+                                415,
+                                756,
+                                1205
+                              ],
+                              "children": [
+                                {
+                                  "name": "Documents",
+                                  "automation_id": "724350",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    493,
+                                    228,
+                                    547
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Products",
+                                  "automation_id": "1115456",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    557,
+                                    194,
+                                    611
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Creditors",
+                                  "automation_id": "461966",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    621,
+                                    198,
+                                    675
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Debtors",
+                                  "automation_id": "724262",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    685,
+                                    182,
+                                    739
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "terms of payment",
+                                  "automation_id": "1248714",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    749,
+                                    312,
+                                    803
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Shippings",
+                                  "automation_id": "591254",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    813,
+                                    208,
+                                    867
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "VATs",
+                                  "automation_id": "1051798",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    877,
+                                    138,
+                                    931
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Texts",
+                                  "automation_id": "658950",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    941,
+                                    142,
+                                    995
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Lists",
+                                  "automation_id": "1183156",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1005,
+                                    134,
+                                    1059
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Expenditure Vouchers",
+                                  "automation_id": "986384",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1069,
+                                    364,
+                                    1123
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Receipt Vouchers",
+                                  "automation_id": "9506360",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1133,
+                                    304,
+                                    1187
+                                  ],
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "name": "",
+                              "automation_id": "1248392",
+                              "control_type": "Pane",
+                              "class_name": "SWT_Window0",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                10,
+                                1215,
+                                756,
+                                1429
+                              ],
+                              "children": [
+                                {
+                                  "name": "New product",
+                                  "automation_id": "986686",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1293,
+                                    250,
+                                    1347
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "New Contact",
+                                  "automation_id": "527968",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1357,
+                                    248,
+                                    1411
+                                  ],
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "name": "",
+                              "automation_id": "10030640",
+                              "control_type": "Pane",
+                              "class_name": "SWT_Window0",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                10,
+                                1439,
+                                756,
+                                1717
+                              ],
+                              "children": [
+                                {
+                                  "name": "ParcelService",
+                                  "automation_id": "1117588",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1517,
+                                    248,
+                                    1571
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "www.fakturama.info",
+                                  "automation_id": "4394260",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1581,
+                                    340,
+                                    1635
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Calculator",
+                                  "automation_id": "920984",
+                                  "control_type": "Text",
+                                  "class_name": "SWT_Window0",
+                                  "visible": false,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    22,
+                                    1645,
+                                    208,
+                                    1699
+                                  ],
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "*New Order",
+                      "automation_id": "986484",
+                      "control_type": "Tab",
+                      "class_name": "SWT_Window0",
+                      "visible": true,
+                      "enabled": true,
+                      "patterns": {},
+                      "rect": [
+                        774,
+                        245,
+                        3840,
+                        1403
+                      ],
+                      "children": [
+                        {
+                          "name": "",
+                          "automation_id": "789740",
+                          "control_type": "ToolBar",
+                          "class_name": "ToolbarWindow32",
+                          "visible": true,
+                          "enabled": true,
+                          "patterns": {},
+                          "rect": [
+                            3750,
+                            247,
+                            3828,
+                            295
+                          ],
+                          "children": [
+                            {
+                              "name": "Minimize",
+                              "automation_id": "",
+                              "control_type": "Button",
+                              "class_name": "",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {
+                                "invoke": {}
+                              },
+                              "rect": [
+                                3750,
+                                247,
+                                3789,
+                                285
+                              ],
+                              "children": []
+                            },
+                            {
+                              "name": "Maximize",
+                              "automation_id": "",
+                              "control_type": "Button",
+                              "class_name": "",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {
+                                "invoke": {}
+                              },
+                              "rect": [
+                                3789,
+                                247,
+                                3828,
+                                285
+                              ],
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "name": "New Order",
+                          "automation_id": "660206",
+                          "control_type": "Pane",
+                          "class_name": "SWT_Window0",
+                          "visible": true,
+                          "enabled": true,
+                          "patterns": {},
+                          "rect": [
+                            780,
+                            301,
+                            3834,
+                            1397
+                          ],
+                          "children": [
+                            {
+                              "name": "",
+                              "automation_id": "594778",
+                              "control_type": "Pane",
+                              "class_name": "SWT_Window0",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                780,
+                                301,
+                                3834,
+                                1397
+                              ],
+                              "children": [
+                                {
+                                  "name": "",
+                                  "automation_id": "660342",
+                                  "control_type": "Pane",
+                                  "class_name": "SWT_Window0",
+                                  "visible": true,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    780,
+                                    301,
+                                    3834,
+                                    1027
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "",
+                                      "automation_id": "594560",
+                                      "control_type": "Pane",
+                                      "class_name": "SWT_Window0",
+                                      "visible": true,
+                                      "enabled": true,
+                                      "patterns": {},
+                                      "rect": [
+                                        780,
+                                        301,
+                                        3834,
+                                        1027
+                                      ],
+                                      "children": [
+                                        {
+                                          "name": "No.",
+                                          "automation_id": "2429440",
+                                          "control_type": "Text",
+                                          "class_name": "Static",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            806,
+                                            333,
+                                            854,
+                                            375
+                                          ],
+                                          "children": []
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "788790",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            870,
+                                            327,
+                                            2828,
+                                            381
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "",
+                                              "automation_id": "463482",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "PO000001",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                870,
+                                                329,
+                                                1270,
+                                                377
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Date",
+                                              "automation_id": "463504",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                1746,
+                                                333,
+                                                1808,
+                                                375
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "529076",
+                                              "control_type": "Pane",
+                                              "class_name": "SWT_Window0",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                1824,
+                                                327,
+                                                2128,
+                                                381
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "397984",
+                                                  "control_type": "Edit",
+                                                  "class_name": "Edit",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "1 Oct 2026",
+                                                      "CurrentIsReadOnly": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    1828,
+                                                    331,
+                                                    2074,
+                                                    377
+                                                  ],
+                                                  "children": []
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "529042",
+                                              "control_type": "ComboBox",
+                                              "class_name": "ComboBox",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "Gross",
+                                                  "CurrentIsReadOnly": 0
+                                                },
+                                                "expand_collapse": {
+                                                  "CurrentExpandCollapseState": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                2184,
+                                                327,
+                                                2828,
+                                                376
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "",
+                                                  "control_type": "Text",
+                                                  "class_name": "",
+                                                  "visible": false,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "Gross",
+                                                      "CurrentIsReadOnly": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    3,
+                                                    3,
+                                                    598,
+                                                    46
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "Open",
+                                                  "automation_id": "DropDown",
+                                                  "control_type": "Button",
+                                                  "class_name": "",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "invoke": {}
+                                                  },
+                                                  "rect": [
+                                                    2786,
+                                                    328,
+                                                    2827,
+                                                    375
+                                                  ],
+                                                  "children": []
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "463494",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            2844,
+                                            323,
+                                            2972,
+                                            387
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "Order",
+                                              "automation_id": "529044",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                2844,
+                                                345,
+                                                2892,
+                                                365
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "398016",
+                                              "control_type": "Image",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                2908,
+                                                323,
+                                                2972,
+                                                387
+                                              ],
+                                              "children": []
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "660204",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            780,
+                                            409,
+                                            3834,
+                                            721
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "Cust.Ref.",
+                                              "automation_id": "2296582",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                812,
+                                                481,
+                                                928,
+                                                523
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Cust.Ref.",
+                                              "automation_id": "1053400",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                938,
+                                                479,
+                                                1958,
+                                                527
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "987726",
+                                              "control_type": "Pane",
+                                              "class_name": "SWT_Window0",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                1968,
+                                                539,
+                                                2866,
+                                                703
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "Consultant",
+                                                  "automation_id": "1051426",
+                                                  "control_type": "Text",
+                                                  "class_name": "Static",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    1990,
+                                                    563,
+                                                    2134,
+                                                    605
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "Consultant",
+                                                  "automation_id": "463578",
+                                                  "control_type": "Edit",
+                                                  "class_name": "Edit",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "",
+                                                      "CurrentIsReadOnly": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    2150,
+                                                    561,
+                                                    2844,
+                                                    609
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "VAT",
+                                                  "automation_id": "332562",
+                                                  "control_type": "Text",
+                                                  "class_name": "Static",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    2084,
+                                                    635,
+                                                    2134,
+                                                    677
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "VAT",
+                                                  "automation_id": "398082",
+                                                  "control_type": "ComboBox",
+                                                  "class_name": "ComboBox",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "With VAT",
+                                                      "CurrentIsReadOnly": 0
+                                                    },
+                                                    "expand_collapse": {
+                                                      "CurrentExpandCollapseState": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    2150,
+                                                    631,
+                                                    2844,
+                                                    680
+                                                  ],
+                                                  "children": [
+                                                    {
+                                                      "name": "VAT",
+                                                      "automation_id": "",
+                                                      "control_type": "Text",
+                                                      "class_name": "",
+                                                      "visible": false,
+                                                      "enabled": true,
+                                                      "patterns": {
+                                                        "value": {
+                                                          "CurrentValue": "With VAT",
+                                                          "CurrentIsReadOnly": 0
+                                                        }
+                                                      },
+                                                      "rect": [
+                                                        3,
+                                                        3,
+                                                        648,
+                                                        46
+                                                      ],
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "name": "Open",
+                                                      "automation_id": "DropDown",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": true,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        2802,
+                                                        632,
+                                                        2843,
+                                                        679
+                                                      ],
+                                                      "children": []
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "Create a follow-up document",
+                                              "automation_id": "332426",
+                                              "control_type": "Group",
+                                              "class_name": "SWT_GROUP",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                2876,
+                                                547,
+                                                3822,
+                                                703
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "463606",
+                                                  "control_type": "ToolBar",
+                                                  "class_name": "ToolbarWindow32",
+                                                  "visible": true,
+                                                  "enabled": false,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    2880,
+                                                    589,
+                                                    3420,
+                                                    701
+                                                  ],
+                                                  "children": [
+                                                    {
+                                                      "name": "Confirmation",
+                                                      "automation_id": "",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": true,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        2880,
+                                                        589,
+                                                        3064,
+                                                        701
+                                                      ],
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "name": "Invoice",
+                                                      "automation_id": "",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": true,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        3064,
+                                                        589,
+                                                        3169,
+                                                        701
+                                                      ],
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "name": "Delivery",
+                                                      "automation_id": "",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": true,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        3169,
+                                                        589,
+                                                        3286,
+                                                        701
+                                                      ],
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "name": "Proforma",
+                                                      "automation_id": "",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": true,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        3286,
+                                                        589,
+                                                        3420,
+                                                        701
+                                                      ],
+                                                      "children": []
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "594526",
+                                              "control_type": "Pane",
+                                              "class_name": "SWT_Window0",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                792,
+                                                537,
+                                                928,
+                                                703
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "Addresses",
+                                                  "automation_id": "397928",
+                                                  "control_type": "Text",
+                                                  "class_name": "Static",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    792,
+                                                    537,
+                                                    928,
+                                                    579
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "463584",
+                                                  "control_type": "Image",
+                                                  "class_name": "Static",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    888,
+                                                    601,
+                                                    928,
+                                                    641
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "3346976",
+                                                  "control_type": "Image",
+                                                  "class_name": "Static",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    888,
+                                                    663,
+                                                    928,
+                                                    703
+                                                  ],
+                                                  "children": []
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "Invoice address",
+                                              "automation_id": "332556",
+                                              "control_type": "Tab",
+                                              "class_name": "SWT_Window0",
+                                              "visible": false,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                938,
+                                                537,
+                                                1958,
+                                                703
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "463600",
+                                                  "control_type": "Edit",
+                                                  "class_name": "Edit",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "",
+                                                      "CurrentIsReadOnly": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    942,
+                                                    593,
+                                                    1954,
+                                                    699
+                                                  ],
+                                                  "children": [
+                                                    {
+                                                      "name": "Vertical",
+                                                      "automation_id": "NonClientVerticalScrollBar",
+                                                      "control_type": "ScrollBar",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": false,
+                                                      "patterns": {},
+                                                      "rect": [
+                                                        1909,
+                                                        595,
+                                                        1952,
+                                                        697
+                                                      ],
+                                                      "children": [
+                                                        {
+                                                          "name": "Line up",
+                                                          "automation_id": "UpButton",
+                                                          "control_type": "Button",
+                                                          "class_name": "",
+                                                          "visible": true,
+                                                          "enabled": false,
+                                                          "patterns": {
+                                                            "invoke": {}
+                                                          },
+                                                          "rect": [
+                                                            1909,
+                                                            595,
+                                                            1952,
+                                                            638
+                                                          ],
+                                                          "children": []
+                                                        },
+                                                        {
+                                                          "name": "Line down",
+                                                          "automation_id": "DownButton",
+                                                          "control_type": "Button",
+                                                          "class_name": "",
+                                                          "visible": true,
+                                                          "enabled": false,
+                                                          "patterns": {
+                                                            "invoke": {}
+                                                          },
+                                                          "rect": [
+                                                            1909,
+                                                            654,
+                                                            1952,
+                                                            697
+                                                          ],
+                                                          "children": []
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                },
+                                                {
+                                                  "name": "Invoice address",
+                                                  "automation_id": "",
+                                                  "control_type": "TabItem",
+                                                  "class_name": "",
+                                                  "visible": false,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "selection_item": {
+                                                      "CurrentIsSelected": 1
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    469,
+                                                    269,
+                                                    606,
+                                                    294
+                                                  ],
+                                                  "children": []
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "594594",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            780,
+                                            743,
+                                            854,
+                                            1009
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "Items",
+                                              "automation_id": "1443974",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                780,
+                                                743,
+                                                854,
+                                                785
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "529194",
+                                              "control_type": "Image",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                814,
+                                                807,
+                                                854,
+                                                847
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "463660",
+                                              "control_type": "Image",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                822,
+                                                869,
+                                                854,
+                                                901
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "1249904",
+                                              "control_type": "Image",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                822,
+                                                923,
+                                                854,
+                                                955
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "463572",
+                                              "control_type": "Image",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                822,
+                                                977,
+                                                854,
+                                                1009
+                                              ],
+                                              "children": []
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "332574",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            870,
+                                            743,
+                                            3834,
+                                            1027
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "",
+                                              "automation_id": "332576",
+                                              "control_type": "Pane",
+                                              "class_name": "SWT_Window0",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                872,
+                                                745,
+                                                3816,
+                                                1025
+                                              ],
+                                              "children": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "",
+                                  "automation_id": "1249790",
+                                  "control_type": "Pane",
+                                  "class_name": "SWT_Window0",
+                                  "visible": true,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    780,
+                                    1033,
+                                    3834,
+                                    1397
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "",
+                                      "automation_id": "398102",
+                                      "control_type": "Pane",
+                                      "class_name": "SWT_Window0",
+                                      "visible": true,
+                                      "enabled": true,
+                                      "patterns": {},
+                                      "rect": [
+                                        780,
+                                        1033,
+                                        3834,
+                                        1397
+                                      ],
+                                      "children": [
+                                        {
+                                          "name": "",
+                                          "automation_id": "786834",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            780,
+                                            1033,
+                                            892,
+                                            1137
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "Remarks",
+                                              "automation_id": "267054",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                780,
+                                                1033,
+                                                892,
+                                                1075
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "1315624",
+                                              "control_type": "Image",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                852,
+                                                1097,
+                                                892,
+                                                1137
+                                              ],
+                                              "children": []
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "594584",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            908,
+                                            1033,
+                                            2088,
+                                            1375
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "",
+                                              "automation_id": "660174",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                908,
+                                                1033,
+                                                2088,
+                                                1375
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "Vertical",
+                                                  "automation_id": "NonClientVerticalScrollBar",
+                                                  "control_type": "ScrollBar",
+                                                  "class_name": "",
+                                                  "visible": true,
+                                                  "enabled": false,
+                                                  "patterns": {},
+                                                  "rect": [
+                                                    2043,
+                                                    1035,
+                                                    2086,
+                                                    1373
+                                                  ],
+                                                  "children": [
+                                                    {
+                                                      "name": "Line up",
+                                                      "automation_id": "UpButton",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": false,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        2043,
+                                                        1035,
+                                                        2086,
+                                                        1078
+                                                      ],
+                                                      "children": []
+                                                    },
+                                                    {
+                                                      "name": "Line down",
+                                                      "automation_id": "DownButton",
+                                                      "control_type": "Button",
+                                                      "class_name": "",
+                                                      "visible": true,
+                                                      "enabled": false,
+                                                      "patterns": {
+                                                        "invoke": {}
+                                                      },
+                                                      "rect": [
+                                                        2043,
+                                                        1330,
+                                                        2086,
+                                                        1373
+                                                      ],
+                                                      "children": []
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "660060",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            2104,
+                                            1033,
+                                            3834,
+                                            1397
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "Total Gross",
+                                              "automation_id": "529082",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                2994,
+                                                1045,
+                                                3140,
+                                                1087
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Total Gross",
+                                              "automation_id": "529144",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": false,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "AED0.00",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                3150,
+                                                1043,
+                                                3824,
+                                                1091
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Discount",
+                                              "automation_id": "398192",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                3022,
+                                                1103,
+                                                3140,
+                                                1145
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Discount",
+                                              "automation_id": "332582",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "0%",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                3150,
+                                                1101,
+                                                3824,
+                                                1149
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Shipping",
+                                              "automation_id": "398100",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                2114,
+                                                1163,
+                                                2232,
+                                                1205
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Shipping",
+                                              "automation_id": "529078",
+                                              "control_type": "ComboBox",
+                                              "class_name": "ComboBox",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "Free of shipping costs",
+                                                  "CurrentIsReadOnly": 0
+                                                },
+                                                "expand_collapse": {
+                                                  "CurrentExpandCollapseState": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                2242,
+                                                1159,
+                                                3140,
+                                                1208
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "Shipping",
+                                                  "automation_id": "1001",
+                                                  "control_type": "Edit",
+                                                  "class_name": "Edit",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "Free of shipping costs",
+                                                      "CurrentIsReadOnly": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    2245,
+                                                    1162,
+                                                    3094,
+                                                    1205
+                                                  ],
+                                                  "children": []
+                                                },
+                                                {
+                                                  "name": "Open",
+                                                  "automation_id": "DropDown",
+                                                  "control_type": "Button",
+                                                  "class_name": "",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "invoke": {}
+                                                  },
+                                                  "rect": [
+                                                    3098,
+                                                    1160,
+                                                    3139,
+                                                    1207
+                                                  ],
+                                                  "children": []
+                                                }
+                                              ]
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "463470",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "AED0.00",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                3150,
+                                                1159,
+                                                3824,
+                                                1209
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "VAT",
+                                              "automation_id": "594606",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                3090,
+                                                1221,
+                                                3140,
+                                                1263
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "VAT",
+                                              "automation_id": "594508",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": false,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "AED0.00",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                3150,
+                                                1219,
+                                                3824,
+                                                1267
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Total",
+                                              "automation_id": "463502",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                3076,
+                                                1279,
+                                                3140,
+                                                1321
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "Total",
+                                              "automation_id": "529148",
+                                              "control_type": "Edit",
+                                              "class_name": "Edit",
+                                              "visible": true,
+                                              "enabled": false,
+                                              "patterns": {
+                                                "value": {
+                                                  "CurrentValue": "AED0.00",
+                                                  "CurrentIsReadOnly": 0
+                                                }
+                                              },
+                                              "rect": [
+                                                3150,
+                                                1277,
+                                                3824,
+                                                1325
+                                              ],
+                                              "children": []
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "",
+                                  "automation_id": "398054",
+                                  "control_type": "Pane",
+                                  "class_name": "SWT_Window0",
+                                  "visible": true,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    780,
+                                    1027,
+                                    3834,
+                                    1033
+                                  ],
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Fakturama",
+                          "automation_id": "",
+                          "control_type": "TabItem",
+                          "class_name": "",
+                          "visible": false,
+                          "enabled": true,
+                          "patterns": {
+                            "selection_item": {
+                              "CurrentIsSelected": 0
+                            }
+                          },
+                          "rect": [
+                            387,
+                            123,
+                            484,
+                            148
+                          ],
+                          "children": []
+                        },
+                        {
+                          "name": "*New Order",
+                          "automation_id": "",
+                          "control_type": "TabItem",
+                          "class_name": "",
+                          "visible": false,
+                          "enabled": true,
+                          "patterns": {
+                            "selection_item": {
+                              "CurrentIsSelected": 1
+                            }
+                          },
+                          "rect": [
+                            484,
+                            123,
+                            639,
+                            148
+                          ],
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "name": "Documents",
+                      "automation_id": "1182958",
+                      "control_type": "Tab",
+                      "class_name": "SWT_Window0",
+                      "visible": false,
+                      "enabled": true,
+                      "patterns": {},
+                      "rect": [
+                        774,
+                        1411,
+                        3840,
+                        2281
+                      ],
+                      "children": [
+                        {
+                          "name": "",
+                          "automation_id": "1379548",
+                          "control_type": "Pane",
+                          "class_name": "SWT_Window0",
+                          "visible": true,
+                          "enabled": true,
+                          "patterns": {},
+                          "rect": [
+                            3672,
+                            1413,
+                            3750,
+                            1461
+                          ],
+                          "children": [
+                            {
+                              "name": "",
+                              "automation_id": "328836",
+                              "control_type": "ToolBar",
+                              "class_name": "ToolbarWindow32",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                3672,
+                                1413,
+                                3750,
+                                1451
+                              ],
+                              "children": [
+                                {
+                                  "name": "Create: Order",
+                                  "automation_id": "",
+                                  "control_type": "Button",
+                                  "class_name": "",
+                                  "visible": true,
+                                  "enabled": true,
+                                  "patterns": {
+                                    "invoke": {}
+                                  },
+                                  "rect": [
+                                    3672,
+                                    1413,
+                                    3711,
+                                    1451
+                                  ],
+                                  "children": []
+                                },
+                                {
+                                  "name": "Delete the marked entry",
+                                  "automation_id": "",
+                                  "control_type": "Button",
+                                  "class_name": "",
+                                  "visible": true,
+                                  "enabled": false,
+                                  "patterns": {
+                                    "invoke": {}
+                                  },
+                                  "rect": [
+                                    3711,
+                                    1413,
+                                    3750,
+                                    1451
+                                  ],
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "",
+                          "automation_id": "9506358",
+                          "control_type": "ToolBar",
+                          "class_name": "ToolbarWindow32",
+                          "visible": true,
+                          "enabled": true,
+                          "patterns": {},
+                          "rect": [
+                            3750,
+                            1413,
+                            3828,
+                            1461
+                          ],
+                          "children": [
+                            {
+                              "name": "Minimize",
+                              "automation_id": "",
+                              "control_type": "Button",
+                              "class_name": "",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {
+                                "invoke": {}
+                              },
+                              "rect": [
+                                3750,
+                                1413,
+                                3789,
+                                1451
+                              ],
+                              "children": []
+                            },
+                            {
+                              "name": "Maximize",
+                              "automation_id": "",
+                              "control_type": "Button",
+                              "class_name": "",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {
+                                "invoke": {}
+                              },
+                              "rect": [
+                                3789,
+                                1413,
+                                3828,
+                                1451
+                              ],
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Documents",
+                          "automation_id": "855296",
+                          "control_type": "Pane",
+                          "class_name": "SWT_Window0",
+                          "visible": true,
+                          "enabled": true,
+                          "patterns": {},
+                          "rect": [
+                            780,
+                            1467,
+                            3834,
+                            2275
+                          ],
+                          "children": [
+                            {
+                              "name": "",
+                              "automation_id": "658588",
+                              "control_type": "Pane",
+                              "class_name": "SWT_Window0",
+                              "visible": true,
+                              "enabled": true,
+                              "patterns": {},
+                              "rect": [
+                                780,
+                                1467,
+                                3834,
+                                2275
+                              ],
+                              "children": [
+                                {
+                                  "name": "",
+                                  "automation_id": "986418",
+                                  "control_type": "Pane",
+                                  "class_name": "SWT_Window0",
+                                  "visible": true,
+                                  "enabled": true,
+                                  "patterns": {},
+                                  "rect": [
+                                    848,
+                                    1469,
+                                    3832,
+                                    2273
+                                  ],
+                                  "children": [
+                                    {
+                                      "name": "",
+                                      "automation_id": "1117298",
+                                      "control_type": "Pane",
+                                      "class_name": "SWT_Window0",
+                                      "visible": true,
+                                      "enabled": true,
+                                      "patterns": {},
+                                      "rect": [
+                                        848,
+                                        1469,
+                                        3832,
+                                        1537
+                                      ],
+                                      "children": [
+                                        {
+                                          "name": " ",
+                                          "automation_id": "724114",
+                                          "control_type": "Text",
+                                          "class_name": "Static",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            1478,
+                                            1493,
+                                            1482,
+                                            1513
+                                          ],
+                                          "children": []
+                                        },
+                                        {
+                                          "name": "",
+                                          "automation_id": "265946",
+                                          "control_type": "Pane",
+                                          "class_name": "SWT_Window0",
+                                          "visible": true,
+                                          "enabled": true,
+                                          "patterns": {},
+                                          "rect": [
+                                            3390,
+                                            1469,
+                                            3816,
+                                            1537
+                                          ],
+                                          "children": [
+                                            {
+                                              "name": "Search:",
+                                              "automation_id": "656498",
+                                              "control_type": "Text",
+                                              "class_name": "Static",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                3400,
+                                                1481,
+                                                3496,
+                                                1523
+                                              ],
+                                              "children": []
+                                            },
+                                            {
+                                              "name": "",
+                                              "automation_id": "331480",
+                                              "control_type": "Pane",
+                                              "class_name": "SWT_Window0",
+                                              "visible": true,
+                                              "enabled": true,
+                                              "patterns": {},
+                                              "rect": [
+                                                3506,
+                                                1479,
+                                                3806,
+                                                1527
+                                              ],
+                                              "children": [
+                                                {
+                                                  "name": "",
+                                                  "automation_id": "1772476",
+                                                  "control_type": "Edit",
+                                                  "class_name": "Edit",
+                                                  "visible": true,
+                                                  "enabled": true,
+                                                  "patterns": {
+                                                    "value": {
+                                                      "CurrentValue": "",
+                                                      "CurrentIsReadOnly": 0
+                                                    }
+                                                  },
+                                                  "rect": [
+                                                    3506,
+                                                    1479,
+                                                    3806,
+                                                    1527
+                                                  ],
+                                                  "children": [
+                                                    {
+                                                      "name": "",
+                                                      "automation_id": "512",
+                                                      "control_type": "Image",
+                                                      "class_name": "Static",
+                                                      "visible": true,
+                                                      "enabled": true,
+                                                      "patterns": {},
+                                                      "rect": [
+                                                        3508,
+                                                        1481,
+                                                        3548,
+                                                        1525
+                                                      ],
+                                                      "children": []
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    {
+                                      "name": "",
+                                      "automation_id": "525590",
+                                      "control_type": "Pane",
+                                      "class_name": "SWT_Window0",
+                                      "visible": true,
+                                      "enabled": true,
+                                      "patterns": {},
+                                      "rect": [
+                                        848,
+                                        1547,
+                                        3832,
+                                        2273
+                                      ],
+                                      "children": []
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "name": "Documents",
+                          "automation_id": "",
+                          "control_type": "TabItem",
+                          "class_name": "",
+                          "visible": false,
+                          "enabled": true,
+                          "patterns": {
+                            "selection_item": {
+                              "CurrentIsSelected": 1
+                            }
+                          },
+                          "rect": [
+                            387,
+                            706,
+                            539,
+                            731
+                          ],
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "",
+      "automation_id": "593356",
+      "control_type": "Pane",
+      "class_name": "SWT_Window0",
+      "visible": true,
+      "enabled": true,
+      "patterns": {},
+      "rect": [
+        0,
+        105,
+        3840,
+        245
+      ],
+      "children": [
+        {
+          "name": "",
+          "automation_id": "724322",
+          "control_type": "Pane",
+          "class_name": "ReBarWindow32",
+          "visible": true,
+          "enabled": true,
+          "patterns": {},
+          "rect": [
+            10,
+            115,
+            3830,
+            235
+          ],
+          "children": [
+            {
+              "name": "",
+              "automation_id": "1182918",
+              "control_type": "ToolBar",
+              "class_name": "ToolbarWindow32",
+              "visible": true,
+              "enabled": true,
+              "patterns": {},
+              "rect": [
+                21,
+                119,
+                316,
+                231
+              ],
+              "children": [
+                {
+                  "name": "Get new orders and products from web shop",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    21,
+                    119,
+                    170,
+                    231
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Print/Export this document as an OpenOffice Writer document",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    170,
+                    119,
+                    242,
+                    231
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Save the current contents",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    242,
+                    119,
+                    314,
+                    231
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "",
+              "automation_id": "328958",
+              "control_type": "ToolBar",
+              "class_name": "ToolbarWindow32",
+              "visible": true,
+              "enabled": true,
+              "patterns": {},
+              "rect": [
+                331,
+                119,
+                642,
+                231
+              ],
+              "children": [
+                {
+                  "name": "Create: New Order",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    331,
+                    119,
+                    419,
+                    231
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Create: New Invoice",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    419,
+                    119,
+                    524,
+                    231
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Create: New Delivery Note",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    524,
+                    119,
+                    641,
+                    231
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "",
+              "automation_id": "986390",
+              "control_type": "ToolBar",
+              "class_name": "ToolbarWindow32",
+              "visible": true,
+              "enabled": true,
+              "patterns": {},
+              "rect": [
+                657,
+                115,
+                1280,
+                235
+              ],
+              "children": [
+                {
+                  "name": "Create a new product",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    657,
+                    115,
+                    772,
+                    235
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Create a new contact",
+                  "automation_id": "",
+                  "control_type": "SplitButton",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    772,
+                    115,
+                    933,
+                    235
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Create: New Expenditure",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    933,
+                    115,
+                    1170,
+                    235
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Create: New Receipt Voucher",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    1170,
+                    115,
+                    1279,
+                    235
+                  ],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "name": "",
+              "automation_id": "1116582",
+              "control_type": "ToolBar",
+              "class_name": "ToolbarWindow32",
+              "visible": true,
+              "enabled": true,
+              "patterns": {},
+              "rect": [
+                1295,
+                119,
+                3830,
+                231
+              ],
+              "children": [
+                {
+                  "name": "Open the web site of the parcel service.",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    1295,
+                    119,
+                    1384,
+                    231
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Open the project web site www.fakturama.info",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    1384,
+                    119,
+                    1461,
+                    231
+                  ],
+                  "children": []
+                },
+                {
+                  "name": "Open the calculator",
+                  "automation_id": "",
+                  "control_type": "Button",
+                  "class_name": "",
+                  "visible": true,
+                  "enabled": true,
+                  "patterns": {
+                    "invoke": {}
+                  },
+                  "rect": [
+                    1461,
+                    119,
+                    1604,
+                    231
+                  ],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "",
+      "automation_id": "",
+      "control_type": "TitleBar",
+      "class_name": "",
+      "visible": true,
+      "enabled": true,
+      "patterns": {
+        "value": {
+          "CurrentValue": "Fakturama - SYNTHETIC_WORKSPACE",
+          "CurrentIsReadOnly": 0
+        }
+      },
+      "rect": [
+        40,
+        -13,
+        3840,
+        56
+      ],
+      "children": [
+        {
+          "name": "System",
+          "automation_id": "MenuBar",
+          "control_type": "MenuBar",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {},
+          "rect": [
+            0,
+            0,
+            55,
+            55
+          ],
+          "children": [
+            {
+              "name": "System",
+              "automation_id": "",
+              "control_type": "MenuItem",
+              "class_name": "",
+              "visible": true,
+              "enabled": true,
+              "patterns": {
+                "expand_collapse": {
+                  "CurrentExpandCollapseState": 0
+                }
+              },
+              "rect": [
+                0,
+                0,
+                55,
+                55
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Minimize",
+          "automation_id": "",
+          "control_type": "Button",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "invoke": {}
+          },
+          "rect": [
+            3487,
+            0,
+            3605,
+            55
+          ],
+          "children": []
+        },
+        {
+          "name": "Restore",
+          "automation_id": "",
+          "control_type": "Button",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "invoke": {}
+          },
+          "rect": [
+            3605,
+            0,
+            3721,
+            55
+          ],
+          "children": []
+        },
+        {
+          "name": "Close",
+          "automation_id": "",
+          "control_type": "Button",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "invoke": {}
+          },
+          "rect": [
+            3721,
+            0,
+            3840,
+            55
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "Application",
+      "automation_id": "MenuBar",
+      "control_type": "MenuBar",
+      "class_name": "",
+      "visible": true,
+      "enabled": true,
+      "patterns": {},
+      "rect": [
+        0,
+        56,
+        3840,
+        104
+      ],
+      "children": [
+        {
+          "name": "File",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            0,
+            56,
+            81,
+            104
+          ],
+          "children": []
+        },
+        {
+          "name": "Edit",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            81,
+            56,
+            167,
+            104
+          ],
+          "children": []
+        },
+        {
+          "name": "Data",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            167,
+            56,
+            264,
+            104
+          ],
+          "children": []
+        },
+        {
+          "name": "New",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            264,
+            56,
+            360,
+            104
+          ],
+          "children": []
+        },
+        {
+          "name": "Extra",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            360,
+            56,
+            460,
+            104
+          ],
+          "children": []
+        },
+        {
+          "name": "Window",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            460,
+            56,
+            606,
+            104
+          ],
+          "children": []
+        },
+        {
+          "name": "Help",
+          "automation_id": "",
+          "control_type": "MenuItem",
+          "class_name": "",
+          "visible": true,
+          "enabled": true,
+          "patterns": {
+            "expand_collapse": {
+              "CurrentExpandCollapseState": 0
+            }
+          },
+          "rect": [
+            606,
+            56,
+            704,
+            104
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}

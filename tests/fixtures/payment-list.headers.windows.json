@@ -1,0 +1,122 @@
+[
+  {
+    "text": "Search:",
+    "left": 2621,
+    "top": 24,
+    "width": 93,
+    "height": 23,
+    "confidence": 96.38102
+  },
+  {
+    "text": "2",
+    "left": 2733,
+    "top": 21,
+    "width": 30,
+    "height": 30,
+    "confidence": 80.004997
+  },
+  {
+    "text": "Standard",
+    "left": 81,
+    "top": 92,
+    "width": 115,
+    "height": 23,
+    "confidence": 96.531639
+  },
+  {
+    "text": "Name",
+    "left": 332,
+    "top": 94,
+    "width": 76,
+    "height": 21,
+    "confidence": 96.970619
+  },
+  {
+    "text": "Discount",
+    "left": 832,
+    "top": 93,
+    "width": 115,
+    "height": 22,
+    "confidence": 96.637314
+  },
+  {
+    "text": "Description",
+    "left": 582,
+    "top": 93,
+    "width": 148,
+    "height": 29,
+    "confidence": 96.721771
+  },
+  {
+    "text": "Disc.",
+    "left": 1082,
+    "top": 93,
+    "width": 59,
+    "height": 22,
+    "confidence": 96.429955
+  },
+  {
+    "text": "Days",
+    "left": 1152,
+    "top": 94,
+    "width": 61,
+    "height": 28,
+    "confidence": 96.380287
+  },
+  {
+    "text": "Net",
+    "left": 1332,
+    "top": 94,
+    "width": 46,
+    "height": 21,
+    "confidence": 96.581711
+  },
+  {
+    "text": "Days",
+    "left": 1388,
+    "top": 94,
+    "width": 61,
+    "height": 28,
+    "confidence": 96.80394
+  },
+  {
+    "text": "v",
+    "left": 176,
+    "top": 140,
+    "width": 32,
+    "height": 30,
+    "confidence": 84.773506
+  },
+  {
+    "text": "Cash",
+    "left": 331,
+    "top": 142,
+    "width": 61,
+    "height": 23,
+    "confidence": 96.602028
+  },
+  {
+    "text": "Pay",
+    "left": 582,
+    "top": 144,
+    "width": 44,
+    "height": 28,
+    "confidence": 96.66349
+  },
+  {
+    "text": "Cash",
+    "left": 635,
+    "top": 142,
+    "width": 61,
+    "height": 23,
+    "confidence": 96.66349
+  },
+  {
+    "text": "0%",
+    "left": 1013,
+    "top": 144,
+    "width": 39,
+    "height": 21,
+    "confidence": 93.822098
+  }
+]

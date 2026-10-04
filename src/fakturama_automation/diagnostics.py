@@ -1,7 +1,5 @@
-"""Read-only app discovery/capture for an operator's Windows machine.
-
-Does not launch an application, focus it, click/type/save, or change accounting
-data. Captures only visible top-level windows in the chosen application PID.
+"""Read-only discovery and capture of Fakturama's windows for diagnostics. No launching, focus changes,
+clicks or saves.
 """
 
 import json
@@ -31,18 +29,26 @@ def choose_process(rows: list[dict], requested_pid: int | None) -> int:
 def capture_bundle(label: str, output_root: Path, requested_pid: int | None = None) -> Path:
     if not re.fullmatch(r"[a-z][a-z0-9_-]{0,39}", label):
         raise ReviewRequired("invalid_capture_label")
-    discovered = discover_fakturama_windows()
-    pid = choose_process(discovered, requested_pid)
+    if requested_pid is None:
+        pid = choose_process(discover_fakturama_windows(), None)
+    else:
+        if type(requested_pid) is not int or requested_pid <= 0:
+            raise ReviewRequired("invalid_process_id")
+        pid = requested_pid
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     folder = output_root / f"{label}-{stamp}"
     folder.mkdir(parents=True, exist_ok=False, mode=0o700)
     windows = list_process_windows(pid)
-    # Handles and PID come from observed process windows, never image/model output.
     captured = []
     for row in windows:
         if row["pid"] != pid:
             raise ReviewRequired("capture_window_process_mismatch")
-        tree = inspect_window(pid, row["handle"])
+        try:
+            tree = inspect_window(pid, row["handle"])
+        except ReviewRequired as exc:
+            if exc.code == "window_not_visible":
+                continue
+            raise
         if not tree["tree"].get("visible", False):
             continue
         filename = f"window-{row['handle']}.json"
@@ -55,7 +61,6 @@ def capture_bundle(label: str, output_root: Path, requested_pid: int | None = No
                 "note": "May contain visible synthetic/accounting data. Review before sharing. No screenshot or desktop mutation."}
     write_private(folder / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
     bundle = output_root / f"{label}-{stamp}.zip"
-    # Exclusive creation. Include only files created by this capture, never an arbitrary directory.
     with zipfile.ZipFile(bundle, "x", zipfile.ZIP_DEFLATED) as archive:
         for item in [folder/"manifest.json", *(folder/row["file"] for row in captured)]:
             archive.write(item, item.name)

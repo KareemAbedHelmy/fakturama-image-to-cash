@@ -32,9 +32,9 @@ Total net 570.00; VAT 108.30; gross 678.30. Product master gross prices exclude 
 - Retain CUST-1007 as source reference data. When creating a Debtor, leave the app's proposed Customer ID unchanged as the assignment explicitly requires. Do not substitute CUST-1007.
 - Contact is split into First Name Marta and Last Name Klein. No salutation is supplied; the new Debtor must use ---.
 - Email/telephone appear in the customer/contact block. Assign them to the main billing contact; do not invent delivery contact details.
-- Billing and delivery differ in recipient, street, and ZIP. Keep separate address roles, including the explicit warehouse recipient. Core comparisons cover the recipient so a saved Invoice with the wrong company line fails verification.
+- Billing and delivery differ in recipient, street, and ZIP. Keep separate address roles, including the explicit warehouse recipient. The Debtor's Main address recipient is checked; for the delivery address Fakturama shows the contact's company in the heading, so only its street, ZIP, city and country are verified.
 - The image supplies no order-level discount or shipping charge, and the printed totals reconcile exactly from the item lines. Use overall discount 0 and free shipping 0.00; do not introduce a charge.
 - Both items use pcs. Retain this source unit; an application-specific unit mapping must be observed rather than guessed.
 - Invoice number, Invoice Date, and Service date are application-proposed values, not fields to copy from the image. Preserve them. The copied Order Date remains 2026-07-14.
 
-Local Tesseract OCR significantly misread labels, contact data, and SKUs on this small image. Upscaling did not recover the lost letter detail. A higher-resolution original would help if available; otherwise a vision extraction route needs explicit source-accuracy evaluation. Numerical agreement alone cannot detect a misspelled name, wrong SKU, or wrong address.
+Local Tesseract OCR reads this small image's header band, customer block, payment row and printed totals (used as a cross-check by `ocr-verify`), but not the item table or street lines; those need a vision extraction or a human-reviewed transcription. Numerical agreement alone cannot detect a misspelled name, wrong SKU or wrong address.

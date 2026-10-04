@@ -1,34 +1,37 @@
-# Security review
+# Security notes
 
 ## Threat model
 
-Untrusted inputs: images, OCR/model output, desktop selector rows, copied document fields, loading dialogs, and source text resembling instructions or hotkeys. Trusted boundary: operator-controlled local machine, installed executable, configured local model server, and application. An attacker already controlling the desktop, model server, journal, or application is outside this initial threat model.
+Untrusted inputs: the order image, OCR and model output, rows copied from
+Fakturama's selectors, and any source text that resembles instructions or
+hotkeys. The trusted boundary is the operator's own Windows machine, the
+installed Fakturama executable and, for the optional extractor, the Anthropic
+API. An attacker who already controls the desktop, the application or the
+journal is outside this model.
 
-## Implemented safeguards
+## Safeguards
 
 | Risk | Safeguard | Remaining limitation |
 | --- | --- | --- |
-| Prompt injection requests application actions | Extractor has no tools; typed schema; workflow accepts allowlisted data | Valid schema can still contain hallucinated facts; image review required |
-| Command/hotkey injection | OCR uses argv with shell=False; UIA ValuePattern-style edit; no type_keys on source | Native pattern support is unverified on Fakturama |
-| Malformed/oversized images | Decode format/dimension/frame/byte checks; fresh RGB PNG; remove metadata | Pillow decoder remains a dependency attack surface |
-| Invalid financial values | Reject numeric floats/booleans/exponents/nonfinite/negative; Decimal arithmetic; reconcile totals | Rounding parity with Fakturama needs live validation |
-| Ambiguous search results | Exact unique matching; conflict stops; no first-row selection | Adapter must prove results complete and search settled |
-| Duplicate accounting documents | Hashed business key + source fingerprint; journal lease; adapter preflight | One stable journal/workspace per database; no cross-machine/exactly-once guarantee |
-| Save happened but response failed | Commit INTENT before side effect; preserve REVIEW lease; no retry | Recovery is manual; records can remain saved/incomplete |
-| Text leaks in errors | Error codes and opaque journal keys; no raw validation exception | Explicit extraction outputs/UI dumps can contain private data |
-| Output overwrite/symlink | Exclusive create for candidate files; reject journal symlink | Trusted parent directory required; journal check has no hostile-directory race guarantee |
-| Network egress | Client has fixed loopback Ollama address, no proxy/URL option, bounded responses | Local model server can forward requests; operator must disable cloud |
-| Excess privileges | No admin requirement, no direct Fakturama DB writes, no automatic installers | Windows app accessibility permissions may require matching privilege levels |
-| Credential leakage | No API keys needed; Git ignores .env/private/artifacts/journals | Git ignore is not a DLP control; inspect staged files before submission |
+| Prompt injection asks for application actions | The extractor has no tools: it returns JSON that is parsed against a strict schema; source text never becomes keystrokes | A schema-valid answer can still contain a wrong name or SKU; the guided runner shows the extraction for confirmation |
+| Hotkey or command injection | Tesseract runs with an argv list and `shell=False`; fields are written as literal values; only fixed shortcuts (Ctrl+A/Ctrl+C, date navigation keys) are ever sent | UIA pattern support was verified only on Fakturama 2.2.0 |
+| Malformed or oversized images | Format, dimension, frame and byte checks; a fresh RGB PNG is built, which drops metadata | Pillow's decoders remain an attack surface |
+| Invalid money values | Floats, exponents and negatives are rejected; decimal arithmetic; totals must reconcile before anything is typed | A reconciled total does not prove a correct name, SKU or address |
+| Ambiguous search results | Exact, unique matching on copied selector rows; several matches or a conflict stop the run | Absence is inferred from an empty result grid, so the runner asks you to confirm before creating a record |
+| Duplicate documents | Each live command checks the editor state first and refuses to Save an already saved Order or Invoice; the simulator workflow also keeps a hashed-key journal | One workspace per database; no exactly-once guarantee |
+| A Save happens but its response fails | An intent file is written before every live action; each Save or Invoke runs once and is never retried | Recovery from an uncertain result is manual |
+| Wrong window | The tool binds to the Fakturama process, requires it in the foreground and re-checks identity before each action; no stored coordinates | A user clicking elsewhere mid-step can still cause a stop |
+| Text leaking into logs | Errors are codes; reports contain only the order's synthetic data | Reports under `private/` can hold personal data |
+| Output overwrite | Intent and report files are created exclusively | The parent directory must be trusted |
+| Network egress | Only the opt-in `extract --provider claude` call leaves the machine, to a fixed Anthropic host (the key comes from the environment); `--provider ollama` talks to a fixed loopback address | The image is sent to the API when the Claude provider is used |
+| Excess privilege | No admin rights; no direct writes to Fakturama's database; Fakturama's own logs are read-only | Accessibility may need matching privilege levels |
 
-## Open risks before submission
+## Known limits
 
-- Implement and inspect the real desktop adapter; a mistaken scope can edit the wrong record even with safe helpers.
-- Test model extraction with the actual input; no benchmark or factual-accuracy claim is supported yet.
-- Verify numerical locale, zero/reduced VAT behavior, duplicate search results, and saved UI state labels.
-- Add read-only reconciliation tooling for interrupted runs. Do not implement deletion/automatic rollback of accounting records.
-- Perform a fresh dependency vulnerability scan and lock the Windows dependency tree. No current advisory database was available to this runtime; installed version pins are not an audit result.
-- Use Windows user-private folders/ACLs for image, OCR, candidate, journal, and UI evidence. chmod alone does not establish Windows access restrictions.
-- Decide retention and redact evidence before sending it to reviewers. Do not use real pharmacy/patient/accounting data.
-
-The project is not a security-certified or production-ready system. Its safeguards reduce several avoidable risks; they cannot eliminate all vulnerabilities.
+- This is not a security-certified or production system. Its safeguards reduce
+  avoidable risks; they do not remove every vulnerability.
+- Dependencies are pinned but not locked transitively or audited.
+- Copying from the grid overwrites the clipboard. The tool reads only a
+  clipboard freshly owned by Fakturama and never restores earlier content.
+- Evidence and reports can contain accounting data. The examples use synthetic
+  data only; keep real data out of the repository (`private/` is ignored).

@@ -1,0 +1,62 @@
+{
+  "order_date": "2026-08-01",
+  "external_reference": "WEB-2026-0801-B22",
+  "source_customer_id": "CUST-2210",
+  "currency": "EUR",
+  "debtor": {
+    "company": "Harbor Books GmbH",
+    "first_name": "Lena",
+    "last_name": "Vogel",
+    "alias": "HARBOR-HAMBURG",
+    "salutation": null,
+    "billing": {
+      "recipient_name": "Harbor Books GmbH",
+      "street": "Speicherstrasse 12",
+      "zip": "20457",
+      "city": "Hamburg",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "lena.vogel@example.com",
+      "telephone": "+49 40 5550 2210"
+    },
+    "delivery": {
+      "recipient_name": "Harbor Books Depot",
+      "street": "Hafenweg 5",
+      "zip": "22525",
+      "city": "Hamburg",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": null,
+      "telephone": null
+    }
+  },
+  "payment": {
+    "method": "Bank Transfer",
+    "status": "PAID",
+    "date": "2026-08-05"
+  },
+  "items": [
+    {
+      "sku": "BKS-LAMP-03",
+      "description": "Reading Desk Lamp",
+      "quantity": "2",
+      "unit": "pcs",
+      "unit_net": "30.00",
+      "vat_percent": "19",
+      "discount_percent": "0",
+      "source_line_net": "60.00"
+    }
+  ],
+  "order_discount_percent": "0",
+  "shipping_net": "0.00",
+  "totals": {
+    "net": "60.00",
+    "vat": "11.40",
+    "gross": "71.40"
+  },
+  "review_issues": []
+}

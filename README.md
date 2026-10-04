@@ -1,115 +1,188 @@
 # Fakturama Image-to-Cash Automation
 
-Python implementation of a guarded Order-first workflow, a four-page design document, local image/OCR tooling, and Windows UIA inspection primitives.
+Order-first automation of **Fakturama 2.2.0** (Windows) with Microsoft UI
+Automation. From one order image it produces a saved Order and a saved, paid
+Invoice linked to that Order, verifying the persisted records as it goes.
 
-**Current status: foundation milestone, not submission-ready desktop automation.** The complete business workflow runs against an in-memory simulator. The supplied image has a visually reviewed test transcription; its totals and separate delivery recipient pass core checks. The live Fakturama adapter, automatic extraction accuracy, and desktop screenshots/recording are pending. `run` exits with `live_adapter_not_implemented`; it never silently substitutes the simulator. No live Fakturama records have been created or verified by this repository. The user confirmed Windows Fakturama 2.2.0.
+## Status at a glance
 
-The assignment explicitly permits partial implementation in a five-hour timebox. This README distinguishes what is implemented from what is proposed so reviewers can assess the work honestly. Track actual time spent separately; do not present a later extended implementation as five hours of work.
+Two runs on real Fakturama reached a saved Order and a saved, paid, linked
+Invoice with the Order still open: the supplied order on an empty database
+(Order PO000001 / Invoice INV000001, Bank Transfer, paid 2026-07-18, EUR
+678.30) and a new customer with a new product through the guided runner
+(PO000005 / INV000005). See [the live run record](docs/live-run.md) and the
+[recording](#recording).
 
-## Deliverables and layout
-
-| Path | Purpose |
+| Area | State |
 | --- | --- |
-| `docs/design.pdf` | Part 1: four-page design, no code |
-| `docs/design.md` | Editable design source |
-| `docs/requirements.md` | Requirement coverage and remaining acceptance tests |
-| `docs/security.md` | Threat model, implemented safeguards, and open risks |
-| `docs/windows-validation.md` | Windows setup, inspection, and evidence checklist |
-| `docs/written-answer.md` | Answer to “If you had 3 more hours…” for the current milestone |
-| `src/fakturama_automation/` | Schema, finance, matching, workflow, journal, extraction, UIA helpers, simulator, CLI |
-| `tests/` | Automated core, failure-injection, input, and UIA-helper tests |
-| `examples/order.synthetic.json` | Synthetic two-line, two-VAT-rate paid order; not the employer's image |
-| `examples/order.synthetic.png` | Synthetic image for local OCR smoke checks; not Fakturama evidence |
-| `examples/order.provided.expected.json` | Visually reviewed transcription of the supplied image, used only as a test oracle |
-| `docs/provided-order.md` | Source values, interpretation decisions, and extraction limitations |
-| `docs/start-on-windows.md` | Next steps and read-only UIA capture commands |
-| `docs/verification.md` | Recorded checks and their limits |
+| Order header, Debtor/Product selector existence checks, line Qty./Discount, Order verify + Save, Documents check, follow-up Invoice, Invoice deep check, payment status, Invoice Save, final Documents check | Automated and run live |
+| Missing Debtor (open, fill, roles, delivery address, payment, Save) and missing Product (open, fill, gross price, Save once) | Automated and run live (second run) |
+| Missing VAT record, missing payment term | Field entry exists; creation is still an operator step and was not exercised |
+| Extraction from the image | OCR cross-check runs live; LLM extraction (`extract`, needs `ANTHROPIC_API_KEY`) is implemented but the live runs used a reviewed transcription |
+| One unattended command | `tools/run_order_first.py` is guided: it pauses only for the VAT check and the confirmations before creating a Debtor or Product. The simulator `run` command is intentionally blocked |
 
-## Setup on Windows (PowerShell)
+What was skipped, and why, is in [If I had three more hours](#if-i-had-three-more-hours).
 
-Use Python 3.11 or later; the target user environment is Python 3.11. You do not need the Windows `py` launcher. Extract the archive and enter the repository folder.
+## Setup
+
+**Prerequisites**
+
+| Needed for | Requirement |
+| --- | --- |
+| Everything | Python 3.11 or later |
+| Live automation | Windows 10/11, [Fakturama 2.2.0](https://www.fakturama.info/downloads/) with the **English** user interface, installed and started once so its workspace exists |
+| OCR cross-check | [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki) installed at `C:\Program Files\Tesseract-OCR	esseract.exe` |
+| LLM extraction (optional) | An `ANTHROPIC_API_KEY` environment variable, only if you run `extract` or omit `--input` |
+
+**Install** (PowerShell, from the folder that contains `pyproject.toml`):
 
 ```powershell
-python --version
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e ".[windows]"
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m unittest discover -s tests -q   # 370+ tests, no Fakturama needed
 ```
 
-Using the venv interpreter directly avoids changing the PowerShell execution policy. Core dependencies are Pydantic 2.13.5 and Pillow 12.3.0; Windows inspection uses pywinauto 0.6.9. Transitive dependencies are not yet locked/audited; capture them after validating a fresh Windows installation. Linux can install `-e .` and run all platform-independent tests.
+Dependencies are pinned: Pydantic 2.13.5, Pillow 12.3.0 and, for the live
+flow, pywinauto 0.6.9. Transitive dependencies are not locked or audited.
 
-Download Fakturama from its official [downloads page](https://www.fakturama.info/downloads/). The page currently lists 2.2.0 and a Windows installer with Java included. Record the actual version/language under Help/About. Use a separate synthetic-data workspace; do not test against business accounting data. This repository does not download, launch, or reconfigure Fakturama automatically.
+## Run the automation against Fakturama
 
-## Validate and simulate
+1. Start Fakturama 2.2.0 (any workspace; an empty one exercises the
+   create-missing-records branches, a populated one the existing-records
+   branches). Close any open New Order, New Debtor or New product editors.
+   Leave the main window visible: it must stay in the foreground while a step
+   runs, and the tool never uses stored screen coordinates.
+2. Start the guided flow from PowerShell. It finds the Fakturama window
+   itself (no process ID or handle needed) and counts down 5 seconds before
+   each live step so you can click into Fakturama:
 
 ```powershell
-.\.venv\Scripts\python.exe -m fakturama_automation.cli validate examples/order.synthetic.json
-.\.venv\Scripts\python.exe -m fakturama_automation.cli simulate examples/order.synthetic.json --seed missing --journal runs/missing.sqlite
-.\.venv\Scripts\python.exe -m fakturama_automation.cli simulate examples/order.synthetic.json --seed existing --journal runs/existing.sqlite
-.\.venv\Scripts\python.exe -m fakturama_automation.cli simulate examples/order.synthetic.json --seed mixed --journal runs/mixed.sqlite
-.\.venv\Scripts\python.exe -m fakturama_automation.cli journal runs/missing.sqlite
+.\.venv\Scripts\python.exe tools
+un_order_first.py --image examples/order.provided.png --input examples/order.provided.expected.json
 ```
 
-These commands create only simulator records and a local journal. Re-running the same input with the same journal is intentionally blocked. Separate journals above are **isolated simulator scenarios**, not a way to bypass duplicate prevention in live use. A real deployment must use one stable journal path and workspace ID for the same Fakturama database. An interrupted/review run retains its lease and requires reconciliation, not deleting the journal and trying again.
+3. Press Enter at the "Prepare" prompt, then leave the mouse and keyboard
+   alone. The run stops at the first step it cannot verify and prints the
+   report path (`private/run-<timestamp>/NN-<step>.json`); it never retries a
+   Save. Answer the prompts: confirm before a missing Debtor or Product is
+   created, and do the VAT check by hand when asked.
 
-The simulator enforces Order-first selection, retaining the same Order, VAT-before-Product creation, reselecting saved masters, one save per document, follow-up Invoice creation, and persisted readback. Financial calculations use Decimal and ROUND_HALF_UP. VAT currently aggregates rounded line nets by rate and rounds each rate's tax; this needs empirical comparison to Fakturama.
+| Option | Use |
+| --- | --- |
+| `--input FILE` | Reviewed order JSON; OCR cross-checks it against `--image` |
+| (no `--input`) | Extract with Claude vision (`ANTHROPIC_API_KEY`); you confirm the result |
+| `--no-ocr-check` | Test orders that have no matching image, e.g. `examples/order.new-customer.json` |
+| `--resume-number PO0000NN` | Continue with an already open, header-prepared New Order |
+| `--resume-debtor CUSTNNNNNN` | Continue with an already open, unsaved New Debtor |
+| `--order-saved` | The Order is already saved; continue with the Documents check and the Invoice |
 
-## Image extraction
+Every live command is also available on its own, for example
+`python -m fakturama_automation.cli selector-check --help`.
 
-No external API key is needed. The local OCR command requires an independently installed Tesseract executable:
+Every live command writes an intent file before acting and a report after,
+verifies before and after, invokes Save at most once and never retries an
+uncertain action. Source text is data: it is never sent as keystrokes.
+
+The flow follows the brief in order:
+
+1. Extract and validate (decimal totals must reconcile), open New Order, set
+   date, Cust.Ref., Net and With VAT.
+2. Search the Order's Debtor selector. One exact row is selected; none starts
+   the missing-Debtor branch; several stop for review.
+3. For each line, search the Product selector by exact SKU, create the Product
+   only if missing, return to the same Order, then set Qty./discount and
+   verify every line.
+4. Verify addresses and totals, Save the Order once, confirm it in
+   Data > Documents, create the Invoice from the Order's follow-up area.
+5. Verify the Invoice copy (Order Date, both addresses, items, totals), apply
+   the payment status, Save once and confirm both rows (Invoice paid, Order
+   still open) in Data > Documents.
+
+## Reviewer demo (no Fakturama needed)
 
 ```powershell
-.\.venv\Scripts\python.exe -m fakturama_automation.cli ocr --image examples/order.synthetic.png --tesseract "C:\Program Files\Tesseract-OCR\tesseract.exe" --out private/ocr.txt
+.\.venv\Scripts\python.exe -m fakturama_automation.cli demo examples/order.provided.expected.json --reviewed-input --out-dir private/reviewer-demo
 ```
 
-OCR produces text, not structured order data. For layout-aware extraction, an optional client calls an already-running Ollama server at fixed loopback address `127.0.0.1:11434`. You must supply an already-installed local vision model supporting images and structured outputs. No model is downloaded automatically. Configure Ollama to disable cloud features; a loopback endpoint alone does not guarantee that the server never sends data elsewhere. Cloud-labelled model names are rejected, but this is not attestation of server behavior.
+Runs eight scenarios in an in-memory simulator (missing/existing/mixed masters,
+unpaid input, duplicate Debtor or Product, a failure after Order Save, a
+corrupted total) and writes `report.html`. It is simulator evidence only; an
+example is in [docs/demo-report.html](docs/demo-report.html).
 
-```powershell
-# Replace LOCAL_VISION_MODEL with an installed local model name.
-.\.venv\Scripts\python.exe -m fakturama_automation.cli extract --image private/order.png --model LOCAL_VISION_MODEL --out private/candidate.json
-.\.venv\Scripts\python.exe -m fakturama_automation.cli validate private/candidate.json
-```
+## Repository layout
 
-The output is an **untrusted candidate**. Review each value against the image, including any missing field or `review_issues`, before desktop use. Structured output and matching totals do not prove OCR/model accuracy. The actual supplied image was visually reviewed and tried with local OCR; OCR was inaccurate at its 385x529 resolution. A live vision model has not been tested here. Prompt text in the image cannot request tools; the model has no shell or desktop access. The reviewed example is test data, not an image-hash lookup or hardcoded extraction path.
+| Path | Contents |
+| --- | --- |
+| `src/fakturama_automation/domain.py`, `input_io.py`, `finance.py`, `matching.py` | Strict schema, bounded parsing, decimal finance, exact matching |
+| `workflow.py`, `ports.py`, `journal.py`, `simulator.py`, `demo.py` | Order-first workflow, desktop contract, intent journal, simulator |
+| `extraction.py`, `ocr_verify.py` | Claude/Ollama vision extraction, Tesseract cross-check |
+| `uia.py`, `native_ui.py`, `windows_clipboard.py`, `*_ui.py` | Guarded Windows bindings, one module per screen/step |
+| `cli.py` | Every command (`python -m fakturama_automation.cli --help`) |
+| `tools/` | `run_order_first.py` (guided live flow), plus helpers that render the design and the synthetic example |
+| `tests/` | 370+ tests with recorded UIA fixtures |
+| `docs/` | [Design](docs/design.pdf) (source: `design.md`), [requirement coverage](docs/requirements.md), [live run record](docs/live-run.md), [security notes](docs/security.md) |
 
-Inputs: PNG/JPEG, single frame, at most 10 MiB and 20 million pixels. JSON at most 1 MiB; up to 100 lines. Money/percent/quantity are decimal strings, with up to six decimals, no exponent or thousands separator. Dates use `YYYY-MM-DD`. Exact data fields reject unknown keys, control characters, duplicate JSON keys, negative/non-finite numbers, and invalid percentages. Optional absent text is null. Source line totals must be explicitly net; gross-only or unclear line totals need review.
+## Limits worth knowing
 
-Initially supported: EUR; Bank Transfer, Credit Card, SEPA Direct Debit; PAID with payment date or UNPAID without date; zero order-level discount and shipping. Unknown/partial payment, other currencies, nonzero shipping/order discounts, and conflicting repeated-SKU definitions stop for review. These are documented limitations, not silent defaults. Separate billing/delivery addresses are represented and tested in the core; live address-role handling remains to be implemented.
+- Supported scope: EUR; Bank Transfer, Credit Card or SEPA Direct Debit; PAID
+  with a date or UNPAID without one; zero overall discount and shipping.
+  Anything else stops for review.
+- Fakturama 2.2.0 crashes saving an Order while the Delivery address tab is
+  selected; the automation selects the Invoice address tab first.
+- The supplied image is 385x529 px: OCR reads the header, payment and totals
+  but not the item table or street lines, so those rely on the extractor and
+  the printed totals. A passing total check does not prove a name or SKU.
+- Fakturama may show the contact's company in the delivery heading instead of
+  the source's warehouse recipient. Reports verify the delivery street, ZIP,
+  city and country separately from that heading.
+- No accounting data is ever deleted and the Fakturama database is never
+  edited; recovery from an uncertain Save is manual.
 
-## Windows UI inspection
+## Recording
 
-For the current next step, open Fakturama's New Order and capture its accessible controls without finding process IDs manually:
+Screen recording of a full run of the supplied order image: RECORDING_LINK_TO_BE_ADDED
 
-```powershell
-.\.venv\Scripts\python.exe -m fakturama_automation.cli capture --label new-order
-```
+## If I had three more hours
 
-The command detects a single visible Fakturama process and captures only that process's visible windows into a ZIP under `private/ui/`. It does not focus, click, type, save, or take screenshots. JSON includes readable field values and supported UIA patterns, so inspect it before sharing. If more than one Fakturama process exists, run `discover` and supply the observed `--pid`. Detailed staged instructions are in `docs/start-on-windows.md`.
+Two full runs reached a saved Order and a saved, paid, linked Invoice on real
+Fakturama 2.2.0 ([live run](docs/live-run.md)): the supplied order on an empty
+database, and a new customer with a new product through the guided runner,
+including automatic Debtor and Product creation, line entry, the deep Invoice
+check and the Documents-list check. What is not done, in the order I would
+tackle it:
 
-Find the actual Fakturama process ID in Task Manager (Details). List only that process's windows, then use the returned native window handle:
+**Hour 1 - the remaining master-data branches.** VAT and payment-term creation
+are still operator steps (the runner prints the exact instructions). Their
+editors are bound only as far as field entry. I would automate "open, fill,
+verify, Save once, re-read" for both with the same pattern as the Product, and
+test each against an empty database, plus the mismatch cases (a conflicting
+VAT value or payment code must stop, not be overwritten).
 
-```powershell
-.\.venv\Scripts\python.exe -m fakturama_automation.cli windows --pid 1234
-.\.venv\Scripts\python.exe -m fakturama_automation.cli inspect --pid 1234 --window-handle 5678 --out private/order-uia.json
-```
+**Hour 2 - extraction and the image-only run.** The `extract` command (Claude
+vision with a forced JSON schema, then decimal reconciliation) is implemented
+but was not used live because no API key was available. The supplied image is
+385x529 px, so local OCR reads the header, payment and totals but not the item
+table or street lines; the live runs used a human-reviewed transcription
+cross-checked by OCR. I would run extraction on the image, diff it against the
+reviewed JSON, record the field-level accuracy, and capture one run that starts
+from the image alone.
 
-Replace both numeric examples with actual values. Inspection is read-only and does not click controls. Dumps may contain names/addresses; use synthetic data and inspect/redact before sharing. Capture separate dumps for the main window, New Order, address/product selectors, Debtor/Payment, VAT, Product, Documents, and linked Invoice. Some controls may be inaccessible; the design describes a future OCR grounding fallback. No absolute-coordinate fallback is implemented.
+**Hour 3 - one command that owns the application.** Today I open Fakturama
+by hand before each run and clean up after a stop (leftover error dialogs, a
+half-filled editor, a tab that must be selected manually). I would make the
+tool launch Fakturama itself: find the installed executable, start it, wait for
+the main window, deal with the first-run workspace dialog, and restart it after
+a crash or a Fakturama error dialog, so a run begins from a known state. On top
+of that I would connect the stages behind the single `run` command with the
+intent journal (no repeated Save after an uncertain result), and replace the
+two flaky pieces I had to work around: tab selection (UIA Select is not
+supported for these tabs, so there is an OCR fallback) and the Data > Documents
+menu, which is currently a best-effort check.
 
-The reusable UIA helpers require one exact, visible, enabled control within a caller-provided scope, use value/invoke patterns, verify value readback, and never retry an uncertain invocation. They do **not** yet supply the application-specific `DesktopPort` methods. Accessibility and control patterns must be measured on the installed Fakturama, not assumed from labels in the brief.
-
-## Recovery and security
-
-All automation operations log durable intent before execution. On a failure, the job enters REVIEW and keeps its workspace lease. A save may already have succeeded. Inspect the journal, generated document numbers, current editors, Documents list, and saved masters before any recovery. There is no automatic resume/reset/delete operation. Never delete accounting records as rollback.
-
-Default terminal output omits source names and addresses. Private candidate files/OCR/UI dumps are local and excluded from Git. POSIX output permissions are restrictive; on Windows files inherit the directory's ACL, so choose a user-private folder. The journal is a recovery aid, not tamper-proof storage or a cross-machine lock. Refer to `docs/security.md` for unresolved risks. No claim of zero vulnerabilities or healthcare compliance is made.
-
-## Completion work
-
-1. Inspect actual Windows controls and implement `DesktopPort` with scoped observed locators and stable selector results.
-2. Validate the employer's image extraction and Fakturama rounding, locale, saved document state, and relationship.
-3. Record one complete live Order-to-Invoice flow, then existing/missing/ambiguous master and failure scenarios.
-4. Add the verified image-to-live orchestration, recovery reconciliation, fresh Windows install/dependency audit, and actual screenshots/recording.
-
-Until these steps pass, do not submit the simulator as working Fakturama automation. The proposed design intentionally describes a broader system than the currently verified implementation.
-
-References: [Fakturama downloads](https://www.fakturama.info/downloads/), [pywinauto inspection guide](https://pywinauto.readthedocs.io/en/latest/getting_started.html), [Ollama structured outputs](https://docs.ollama.com/capabilities/structured-outputs), [Pydantic configuration](https://docs.pydantic.dev/latest/api/config/).
+**Also missing.** Nonzero shipping and order-level discounts stop for review; I
+would implement them after checking Fakturama's rounding live. Only the
+delivery postal fields are verified, because Fakturama shows the contact's
+company in the delivery heading instead of the source's warehouse recipient; I
+would decide and document the expected heading. The existing/missing/mixed/
+duplicate scenarios are proven in the simulator but only some of them live; I
+would run the rest against Fakturama and record them.
