@@ -4,6 +4,10 @@ Order-first automation of **Fakturama 2.2.0** (Windows) with Microsoft UI
 Automation. From one order image it produces a saved Order and a saved, paid
 Invoice linked to that Order, verifying the persisted records as it goes.
 
+**Start here:** [Design document (PDF)](docs/design.pdf) explains the system
+architecture and workflow. Its editable source is [design.md](docs/design.md).
+For the end-to-end walkthrough, watch the [live demo recording](#recording).
+
 ## Status at a glance
 
 Two runs on real Fakturama reached a saved Order and a saved, paid, linked
@@ -120,7 +124,7 @@ example is in [docs/demo-report.html](docs/demo-report.html).
 | `cli.py` | Every command (`python -m fakturama_automation.cli --help`) |
 | `tools/` | `run_order_first.py` (guided live flow), plus helpers that render the design and the synthetic example |
 | `tests/` | 370+ tests with recorded UIA fixtures |
-| `docs/` | [Design](docs/design.pdf) (source: `design.md`), [requirement coverage](docs/requirements.md), [live run record](docs/live-run.md), [security notes](docs/security.md) |
+| `docs/` | [Requirement coverage](docs/requirements.md), [live run record](docs/live-run.md), [security notes](docs/security.md) |
 
 ## Limits worth knowing
 
@@ -140,7 +144,7 @@ example is in [docs/demo-report.html](docs/demo-report.html).
 
 ## Recording
 
-Screen recording of a full run of the supplied order image: RECORDING_LINK_TO_BE_ADDED
+Watch the [full live demo run of the supplied order image](https://drive.google.com/file/d/174enlL_cwoWCa_b4-dUBYlfU03Vu3B5w/view?usp=sharing).
 
 ## If I had three more hours
 
