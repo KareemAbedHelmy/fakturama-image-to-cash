@@ -6,7 +6,7 @@ from pathlib import Path
 
 from fakturama_automation.domain import OrderInput, business_key
 from fakturama_automation.errors import ReviewRequired
-from fakturama_automation.finance import cents, line_net, product_gross, validate_order
+from fakturama_automation.finance import calculate_totals, cents, items_subtotal, line_net, product_gross, validate_order
 from fakturama_automation.input_io import parse_order
 
 FIXTURE = Path(__file__).resolve().parents[1] / "examples/order.synthetic.json"
@@ -60,12 +60,31 @@ class DomainFinanceTests(unittest.TestCase):
         with self.assertRaisesRegex(ReviewRequired, "source_totals_mismatch"):
             validate_order(OrderInput.model_validate(data))
 
-    def test_unsupported_shipping_and_order_discount(self):
-        for field in ["shipping_net", "order_discount_percent"]:
-            data = fixture()
-            data[field] = "1"
-            with self.assertRaisesRegex(ReviewRequired, "unsupported_order_discount_or_shipping"):
-                validate_order(OrderInput.model_validate(data))
+    def test_order_shipping_stops_for_review(self):
+        data = fixture()
+        data["shipping_net"] = "1"
+        with self.assertRaisesRegex(ReviewRequired, "unsupported_order_shipping"):
+            validate_order(OrderInput.model_validate(data))
+
+    def test_order_discount_is_applied_per_vat_rate(self):
+        data = fixture()
+        data["order_discount_percent"] = "10"
+        with self.assertRaisesRegex(ReviewRequired, "source_totals_mismatch"):
+            validate_order(OrderInput.model_validate(data))
+        expected = calculate_totals(OrderInput.model_validate(data))
+        data["totals"] = {"net": str(expected.net), "vat": str(expected.vat), "gross": str(expected.gross)}
+        self.assertEqual(validate_order(OrderInput.model_validate(data)), expected)
+        self.assertLess(expected.gross, Decimal("278.40"))
+        data["order_discount_percent"] = "100"
+        with self.assertRaisesRegex(ReviewRequired, "order_discount_out_of_range"):
+            validate_order(OrderInput.model_validate(data))
+
+    def test_subtotal_is_the_item_sum_before_the_order_discount(self):
+        data = fixture()
+        self.assertEqual(items_subtotal(OrderInput.model_validate(data)), Decimal(data["totals"]["net"]))
+        data["order_discount_percent"] = "10"
+        expected = calculate_totals(OrderInput.model_validate(data))
+        self.assertGreater(items_subtotal(OrderInput.model_validate(data)), expected.net)
 
     def test_review_issue_blocks(self):
         data = fixture()

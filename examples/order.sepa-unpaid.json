@@ -1,0 +1,62 @@
+{
+  "order_date": "2026-10-05",
+  "external_reference": "WEB-2026-1005-E44",
+  "source_customer_id": "CUST-4410",
+  "currency": "EUR",
+  "debtor": {
+    "company": "Rheinblick Verlag GmbH",
+    "first_name": "Anna",
+    "last_name": "Becker",
+    "alias": "RHEINBLICK-COLOGNE",
+    "salutation": null,
+    "billing": {
+      "recipient_name": "Rheinblick Verlag GmbH",
+      "street": "Domstrasse 21",
+      "zip": "50667",
+      "city": "Cologne",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "anna.becker@example.com",
+      "telephone": "+49 221 5550 4410"
+    },
+    "delivery": {
+      "recipient_name": "Rheinblick Verlag Lager",
+      "street": "Hafenstrasse 9",
+      "zip": "50678",
+      "city": "Cologne",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": null,
+      "telephone": null
+    }
+  },
+  "payment": {
+    "method": "SEPA Direct Debit",
+    "status": "UNPAID",
+    "date": null
+  },
+  "items": [
+    {
+      "sku": "BKS-NOTE-07",
+      "description": "Reading Notebook Set",
+      "quantity": "5",
+      "unit": "pcs",
+      "unit_net": "20.00",
+      "vat_percent": "7",
+      "discount_percent": "0",
+      "source_line_net": "100.00"
+    }
+  ],
+  "order_discount_percent": "0",
+  "shipping_net": "0.00",
+  "totals": {
+    "net": "100.00",
+    "vat": "7.00",
+    "gross": "107.00"
+  },
+  "review_issues": []
+}

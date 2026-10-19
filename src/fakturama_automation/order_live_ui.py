@@ -27,6 +27,18 @@ def parse_observed_date(text):
         raise ReviewRequired('order_prepare_date_invalid') from None
 
 
+def percent_value(text):
+    """'10%' / '12,5 %' -> Decimal; anything else is unreadable."""
+    from decimal import Decimal, InvalidOperation
+    match = re.fullmatch(r'(-?[0-9]+(?:[.,][0-9]+)?) ?%', (text or '').strip())
+    if not match:
+        raise ReviewRequired('order_discount_unreadable')
+    try:
+        return Decimal(match[1].replace(',', '.'))
+    except InvalidOperation:
+        raise ReviewRequired('order_discount_unreadable') from None
+
+
 LINE_BREAKS = frozenset('\r\n\t')
 
 
@@ -155,9 +167,10 @@ def prepare_order_header_scope(root, source: OrderInput, expected_number, root_g
                 continue
             if values[role] not in {before[role], target[role]}:
                 raise ReviewRequired('order_prepare_header_conflict')
-        for role in ('discount_text', 'shipping_text'):
-            if values[role] != before[role]:
-                raise ReviewRequired('order_prepare_unrelated_value_changed')
+        if values['shipping_text'] != before['shipping_text']:
+            raise ReviewRequired('order_prepare_unrelated_value_changed')
+        if values['discount_text'] != before['discount_text']:
+            raise ReviewRequired('order_prepare_unrelated_value_changed')
         for role in ('subtotal_text', 'vat_total_text', 'total_text'):
             if any(c in '123456789' for c in values[role]):
                 raise ReviewRequired('order_prepare_order_totals_changed')

@@ -34,8 +34,9 @@ def _value(control):
 
 
 class PaymentEditorSession:
-    def __init__(self, root, root_guard=None):
+    def __init__(self, root, root_guard=None, *, require_debtor=True):
         self.root = root
+        self.require_debtor = require_debtor
         self.root_guard = root_guard
         self.write_uncertain = False
         pane = self._pane()
@@ -59,8 +60,10 @@ class PaymentEditorSession:
             raise
         except Exception:
             raise ReviewRequired("payment_editor_tab_selection_unavailable") from None
-        for role, names in [("source_order_tab", {"New Order", "*New Order"}),
-                            ("source_debtor_tab", {"New Debtor", "*New Debtor"})]:
+        required = [("source_order_tab", {"New Order", "*New Order"})]
+        if self.require_debtor:
+            required.append(("source_debtor_tab", {"New Debtor", "*New Debtor"}))
+        for role, names in required:
             exactly_one([c for c in tabs if c.element_info.name in names], role, PREFIX)
         pane = unique_control(self.root, Locator("Pane", name="New Term of Payment"))
         if pane.element_info.process_id != self.root.element_info.process_id:

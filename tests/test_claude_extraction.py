@@ -57,3 +57,39 @@ class ClaudeExtractionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ReviewIssueTidyTests(unittest.TestCase):
+    def test_repeated_and_excess_issues_are_dropped_but_data_is_kept(self):
+        from fakturama_automation.extraction import MAX_REVIEW_ISSUES, tidy_review_issues
+        issues = ['same issue'] * 40 + [f'issue {i}' for i in range(30)] + ['', 7]
+        tidied = tidy_review_issues({'currency': 'EUR', 'review_issues': issues})
+        self.assertEqual(tidied['currency'], 'EUR')
+        self.assertEqual(len(tidied['review_issues']), MAX_REVIEW_ISSUES)
+        self.assertEqual(tidied['review_issues'][0], 'same issue')
+        self.assertEqual(len(set(tidied['review_issues'])), MAX_REVIEW_ISSUES)
+
+    def test_other_shapes_pass_through(self):
+        from fakturama_automation.extraction import tidy_review_issues
+        self.assertEqual(tidy_review_issues({'a': 1}), {'a': 1})
+        self.assertEqual(tidy_review_issues([1]), [1])
+
+
+class NormalizeCandidateTests(unittest.TestCase):
+    def test_percent_signs_are_stripped_and_missing_overall_charges_become_zero(self):
+        from fakturama_automation.extraction import normalize_candidate
+        value = normalize_candidate({
+            'items': [{'sku': 'A', 'vat_percent': '19%', 'discount_percent': '10 %'},
+                      {'sku': 'B', 'vat_percent': '7', 'discount_percent': '0%'}],
+            'order_discount_percent': '', 'shipping_net': None, 'review_issues': []})
+        self.assertEqual([(i['vat_percent'], i['discount_percent']) for i in value['items']],
+                         [('19', '10'), ('7', '0')])
+        self.assertEqual((value['order_discount_percent'], value['shipping_net']), ('0', '0.00'))
+        self.assertEqual(len(value['review_issues']), 2)
+
+    def test_printed_values_are_left_alone(self):
+        from fakturama_automation.extraction import normalize_candidate
+        value = normalize_candidate({'items': [], 'order_discount_percent': '5%', 'shipping_net': '4.90',
+                                     'review_issues': []})
+        self.assertEqual((value['order_discount_percent'], value['shipping_net']), ('5', '4.90'))
+        self.assertEqual(value['review_issues'], [])

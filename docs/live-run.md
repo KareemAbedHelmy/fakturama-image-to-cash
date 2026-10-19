@@ -49,6 +49,69 @@ Save: the e-mail `.test` domain is rejected by Fakturama's validator, so it
 persisted without Company/E-Mail; the existing record was corrected and saved
 again (no duplicate), and the test file now uses an `example.com` address.
 
+## Seventh run: order-level discount (PO000013 / INV000012)
+
+`examples/order.order-discount.json`: Lakeside Stationers, BKS-LAMP-03 4 x 30.00 at 19%, 10% order discount, Credit
+Card, PAID. Fakturama resets the overall Discount to the contact's value when the Debtor is selected, so it is set
+after the lines and reads back as -10%. Totals: subtotal 120,00 (items before the discount), VAT 20,52, total
+128,52; the Order and Invoice were saved and both Documents rows verified. One stop on the way: the line-grid
+rectangle moved after the quantity commit; the line was already correct and the run was resumed at that line.
+
+## Sixth run: new customer, new SEPA Direct Debit term, UNPAID (PO000012 / INV000011)
+
+`examples/order.sepa-unpaid.json` (Rheinblick Verlag GmbH, BKS-NOTE-07 at 7%, SEPA Direct Debit, UNPAID). The
+SEPA term was missing and was created with only the Order open, then the Debtor (CUST000004) was created and
+selected from the Order. The Invoice was saved with `paid` clear and no date or Value; the saved Invoice was
+re-read. In Data > Documents the Order is `COMMAND_ORDER_PENDING` (107.0) and the Invoice `COMMAND_ERROR` (107.0),
+which is how Fakturama shows an unpaid Invoice. Two operator slips (an alt-tab, Fakturama closed before the Order
+was saved) were recovered without duplicates; after the term Save the saved term editor stayed in front, so the
+runner now returns to the Order after creating a term.
+
+## Fifth run: new customer paying by Credit Card (PO000011 / INV000010)
+
+`tools/run_order_first.py --input examples/order.credit-card.json --no-ocr-check --yes` (Lakeside Stationers GmbH,
+existing product `BKS-LAMP-03`, Credit Card, PAID). The Credit Card term of payment did not exist:
+`payment-term-create` created it (Name and Description `Credit Card`, payment code Credit card, zero discount and
+days; the database row was checked) and `payment-term-check` then confirmed it in the list. The new Debtor was
+opened after that, so its Payment dropdown offered the term; the fields, address roles and delivery address were
+filled, the Debtor saved once and re-selected from the Order, and the Order, Invoice, payment and both Documents
+checks followed.
+
+Fakturama behaviour found on the way: a New Debtor editor reads its payment list once, when it opens, so a term
+created afterwards does not appear; the Company field takes its value only from real key events (a UIA write
+shows on screen but the saved contact keeps the old value, and Tab types a tab character into it), so Company
+is now typed with real keystrokes; and the empty-grid detector had to learn each grid's header border, because
+copying from an empty grid makes Fakturama throw. Two Debtors saved with an empty or mangled Company before this
+was understood were corrected once each by a guarded one-off script.
+
+## Fourth run: from the image alone (PO000010 / INV000009)
+
+`tools/run_order_first.py --image examples/OrderImageProvided.png --provider ollama --model qwen3-vl:4b-instruct
+--compare examples/order.provided.expected.json`. Fakturama was not open: the runner started it, maximised the
+window and brought it to the front before every step. The local vision model read the clearer rendering of the
+supplied order (615x847 px) in about ten seconds; the totals reconciled (570.00 / 108.30 / 678.30), the runner
+printed the differences from the reviewed JSON (optional fields such as the customer ID, e-mail, phone and the
+recipient names, and the unit in upper case) and the model's own notes, and waited for confirmation. Northstar
+Office GmbH and both products already existed, so the selector checks selected them; the line values were
+set and verified, the Order was saved once and confirmed in Data > Documents, the Invoice was created from the
+follow-up area and verified (Order Date, both addresses, items, totals), paid and saved once, and the final
+Documents check showed the Invoice paid and the Order open.
+
+## Third run: new VAT and new product on an existing customer (PO000009 / INV000008)
+
+`tools/run_order_first.py --input examples/order.reduced-vat.json --no-ocr-check --yes`
+(Harbor Books GmbH, one line of `BKS-NOTE-07` at 7% VAT). The VAT 7% record was missing, so `vat-create`
+created it (Name and Description `VAT 7%`, value 0.07, code S, saved once; the database log shows
+`FKT_VAT ... 'VAT 7%' ... 0.07 ... 'S'` and `vat-check` then reports it). The run then created the Product, set
+Qty. 3, verified the line, saved Order PO000009, created and verified the Invoice (copied Order Date, both
+addresses, the item row and totals), applied payment, saved INV000008 once, and the final Data > Documents check
+showed the Invoice paid and the Order open.
+
+Problems found on the way, all fixed: opening the New TAX Rate editor moves keyboard focus (a real click on the
+field is needed before typing); the Value field commits only when focus leaves it; and the empty-grid
+detector (Select All/Copy on an empty grid makes Fakturama throw) first missed rows drawn white on a selection
+colour, then counted faint grid lines as rows, so it now looks for a filled header bar and strong contrast only.
+
 ## First run: the supplied order on an empty database (PO000001 / INV000001)
 
 The first run was operator-assisted for the selector searches, the Debtor

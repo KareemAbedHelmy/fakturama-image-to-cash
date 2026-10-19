@@ -1,0 +1,62 @@
+{
+  "order_date": "2026-10-18",
+  "external_reference": "WEB-2026-1018-F52",
+  "source_customer_id": "CUST-3105",
+  "currency": "EUR",
+  "debtor": {
+    "company": "Lakeside Stationers GmbH",
+    "first_name": "Jonas",
+    "last_name": "Weber",
+    "alias": "LAKESIDE-MUNICH",
+    "salutation": null,
+    "billing": {
+      "recipient_name": "Lakeside Stationers GmbH",
+      "street": "Seestrasse 7",
+      "zip": "80331",
+      "city": "Munich",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "jonas.weber@example.com",
+      "telephone": "+49 89 5550 3105"
+    },
+    "delivery": {
+      "recipient_name": "Lakeside Stationers Depot",
+      "street": "Lagerweg 12",
+      "zip": "80939",
+      "city": "Munich",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": null,
+      "telephone": null
+    }
+  },
+  "payment": {
+    "method": "Credit Card",
+    "status": "PAID",
+    "date": "2026-10-19"
+  },
+  "items": [
+    {
+      "sku": "BKS-LAMP-03",
+      "description": "Reading Desk Lamp",
+      "quantity": "4",
+      "unit": "pcs",
+      "unit_net": "30.00",
+      "vat_percent": "19",
+      "discount_percent": "0",
+      "source_line_net": "120.00"
+    }
+  ],
+  "order_discount_percent": "10",
+  "shipping_net": "0.00",
+  "totals": {
+    "net": "108.00",
+    "vat": "20.52",
+    "gross": "128.52"
+  },
+  "review_issues": []
+}

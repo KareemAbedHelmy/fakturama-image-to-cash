@@ -1,0 +1,72 @@
+{
+  "order_date": "2026-10-21",
+  "external_reference": "WEB-2026-1021-H73",
+  "source_customer_id": "CUST-4630",
+  "currency": "EUR",
+  "debtor": {
+    "company": "Seeblick Medien GmbH",
+    "first_name": "Jonas",
+    "last_name": "Keller",
+    "alias": "SEEBLICK-KONSTANZ",
+    "salutation": null,
+    "billing": {
+      "recipient_name": "Seeblick Medien GmbH",
+      "street": "Seestrasse 18",
+      "zip": "78464",
+      "city": "Konstanz",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "jonas.keller@example.com",
+      "telephone": "+49 7531 5550 3301"
+    },
+    "delivery": {
+      "recipient_name": "Seeblick Medien Lager",
+      "street": "Hafenweg 6",
+      "zip": "78462",
+      "city": "Konstanz",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": null,
+      "telephone": null
+    }
+  },
+  "payment": {
+    "method": "Bank Transfer",
+    "status": "PAID",
+    "date": "2026-10-22"
+  },
+  "items": [
+    {
+      "sku": "BKS-POST-09",
+      "description": "Illustrated Poster Set",
+      "quantity": "4",
+      "unit": "pcs",
+      "unit_net": "12.00",
+      "vat_percent": "10",
+      "discount_percent": "0",
+      "source_line_net": "48.00"
+    },
+    {
+      "sku": "BKS-LAMP-03",
+      "description": "Reading Desk Lamp",
+      "quantity": "2",
+      "unit": "pcs",
+      "unit_net": "30.00",
+      "vat_percent": "19",
+      "discount_percent": "5",
+      "source_line_net": "57.00"
+    }
+  ],
+  "order_discount_percent": "0",
+  "shipping_net": "0.00",
+  "totals": {
+    "net": "105.00",
+    "vat": "15.63",
+    "gross": "120.63"
+  },
+  "review_issues": []
+}

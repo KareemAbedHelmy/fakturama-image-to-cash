@@ -10,8 +10,8 @@ from decimal import Decimal, InvalidOperation
 
 from .domain import OrderInput
 from .errors import ReviewRequired
-from .finance import validate_order
-from .order_live_ui import _snapshot as _strict_snapshot, parse_observed_date
+from .finance import items_subtotal, validate_order
+from .order_live_ui import _snapshot as _strict_snapshot, parse_observed_date, percent_value
 from .order_ui import Tree, one, resolve_order_fields
 from .payment_ui import _payment_root
 from .uia import process_executable_name
@@ -113,11 +113,14 @@ def verify_order_values(values, source: OrderInput, expected_number):
         issues.append('price_mode_not_net')
     if values.get('vat_mode') != 'With VAT':
         issues.append('vat_mode_not_with_vat')
-    if source.order_discount_percent == 0 and values.get('discount_text') not in {'0%', '0 %', '0,00%', '0.00%'}:
-        issues.append('order_discount_not_zero')
+    try:
+        if percent_value(values.get('discount_text')) != -source.order_discount_percent:
+            issues.append('order_discount_mismatch')
+    except ReviewRequired:
+        issues.append('order_discount_unreadable')
     if source.shipping_net == 0 and values.get('shipping_text') != SHIPPING_FREE:
         issues.append('shipping_not_free')
-    for role, expected in (('subtotal_text', source.totals.net), ('vat_total_text', source.totals.vat),
+    for role, expected in (('subtotal_text', items_subtotal(source)), ('vat_total_text', source.totals.vat),
                            ('total_text', source.totals.gross)):
         try:
             if parse_display_amount(values.get(role)) != expected:
@@ -176,6 +179,42 @@ def _wait(observe, ready, timeout=12.0, interval=0.5):
             pass
         time.sleep(interval)
     return last, False
+
+
+def apply_order_discount_scope(root, source, expected_number, guard, *, diagnostics=None):
+    """Set the Order's overall Discount once the Debtor and lines are in (selecting a contact resets it
+    to the contact's own discount). Fakturama shows a reduction as a negative percentage."""
+    from .keyboard_text import type_into
+    validate_order(source)
+    diagnostics = diagnostics if diagnostics is not None else {}
+    progress = diagnostics.setdefault('progress', {'phase': 'preflight', 'discount_written': False})
+    target = -source.order_discount_percent
+    guard()
+    doc = read_document(_snapshot(root)[0])
+    if doc['editor_name'] != 'New Order' or doc['values'].get('number') != expected_number:
+        raise ReviewRequired('order_discount_new_order_not_selected')
+    shown = percent_value(doc['values'].get('discount_text'))
+    diagnostics['before'] = doc['values']['discount_text']
+    if shown == target:
+        progress['phase'] = 'complete'
+        return {'status': 'ORDER_DISCOUNT_ALREADY_SET', 'discount_text': doc['values']['discount_text']}
+    snapshot, wrappers = _snapshot(root)
+    field = _find(snapshot, wrappers, 'Edit', 'Discount')
+    anchor = _find(snapshot, wrappers, 'Edit', 'Cust.Ref.')
+    progress['phase'] = 'write'
+    progress['discount_written'] = True
+    type_into(field, format(abs(target).normalize(), 'f') if target else '0')
+    anchor.click_input()  # leaving the field commits it
+    time.sleep(.5)
+    guard()
+    after = read_document(_snapshot(root)[0])
+    diagnostics['after'] = after['values']
+    if percent_value(after['values'].get('discount_text')) != target:
+        raise ReviewRequired('order_discount_readback_mismatch')
+    progress['phase'] = 'complete'
+    return {'status': 'ORDER_DISCOUNT_SET_UNSAVED', 'discount_text': after['values']['discount_text'],
+            'subtotal_text': after['values']['subtotal_text'], 'vat_total_text': after['values']['vat_total_text'],
+            'total_text': after['values']['total_text']}
 
 
 def finalize_order_scope(root, source, expected_number, guard, *, save=False, diagnostics=None):
@@ -291,6 +330,10 @@ def create_followup_invoice_scope(root, source, expected_number, guard, *, diagn
 def _live(pid, handle, fn, *args, **kwargs):
     root = _payment_root(pid, handle)
     return fn(root, *args, _guard_factory(root, pid, handle), **kwargs)
+
+
+def apply_order_discount(pid, handle, source, expected_number, *, diagnostics=None):
+    return _live(pid, handle, apply_order_discount_scope, source, expected_number, diagnostics=diagnostics)
 
 
 def finalize_order(pid, handle, source, expected_number, *, save=False, diagnostics=None):

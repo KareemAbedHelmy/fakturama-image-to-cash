@@ -1,4 +1,4 @@
-"""Small CLI; live run explicitly unavailable until the Windows adapter is verified."""
+"""Command line: extraction and validation, the simulator demo and every guarded live Fakturama step."""
 
 import argparse
 import io
@@ -16,10 +16,12 @@ from .debtor_live_ui import prepare_debtor_page
 from .debtor_address_ui import prepare_billing_role, prepare_delivery
 from .product_live_ui import prepare_product
 from .order_items_ui import prepare_order_line
-from .order_finalize_ui import create_followup_invoice, finalize_order
+from .order_finalize_ui import apply_order_discount, create_followup_invoice, finalize_order
 from .product_create_ui import open_new_order, open_new_product, save_product
 from .master_navigation_ui import open_new_debtor, return_to_order
 from .invoice_verify_ui import verify_invoice_deep
+from .vat_ui import check_vat, create_vat
+from .payment_term_ui import check_payment, create_payment
 from .debtor_flow_ui import prepare_new_debtor, save_new_debtor
 from .documents_ui import verify_documents
 from .selector_live_ui import check_selector
@@ -137,11 +139,12 @@ def parser():
     product.add_argument("--sku", required=True)
     product.add_argument("--out", type=Path, required=True)
     finalize = commands.add_parser("order-finalize", help="Part 4: verify the completed live Order against reviewed JSON; --save invokes Save ONCE")
+    discount = commands.add_parser("order-discount", help="Set the Order's overall Discount from the reviewed JSON after Debtor and lines; never saves")
     followup = commands.add_parser("order-followup-invoice", help="Part 4.6: invoke the saved Order's follow-up Invoice ONCE; Invoice is not saved")
     line = commands.add_parser("order-line-prepare", help="Fill and verify extracted Qty./U.Price/Discount on the appended Order line; never saves")
     line.add_argument("--line-index", type=int, required=True, help="1-based source row, including repeated SKUs")
     line.add_argument("--tesseract", type=Path, default=Path("C:/Program Files/Tesseract-OCR/tesseract.exe"))
-    for live_doc in (finalize, followup, line):
+    for live_doc in (finalize, followup, line, discount):
         live_doc.add_argument("--input", type=Path, required=True)
         live_doc.add_argument("--reviewed-input", action="store_true")
         live_doc.add_argument("--pid", type=int, required=True)
@@ -150,11 +153,17 @@ def parser():
         live_doc.add_argument("--out", type=Path, required=True)
     product_open = commands.add_parser("product-open-editor", help="Step 3.7: invoke toolbar 'Create a new product' ONCE")
     product_save = commands.add_parser("product-save", help="Step 3.11: verify New product fields against source SKU, Save ONCE")
+    vat_check = commands.add_parser("vat-check", help="3.4: read Data > VATs; report whether the VAT of --sku's rate exists (read-only)")
+    vat_create = commands.add_parser("vat-create", help="3.5: create the missing VAT of --sku's rate and Save ONCE")
+    pay_check = commands.add_parser("payment-term-check", help="2.10: read Data > terms of payment; report whether the source payment method exists (read-only)")
+    pay_create = commands.add_parser("payment-term-create", help="2.10: create the missing term of payment (needs the Order and New Debtor open) and Save ONCE")
     debtor_open = commands.add_parser("debtor-open-editor", help="Open New Debtor while retaining the source Order")
     debtor_complete = commands.add_parser("debtor-complete-prepare", help="Fill New Debtor main/delivery/misc fields and roles; never Save")
     debtor_save = commands.add_parser("debtor-save", help="Save the prepared New Debtor ONCE; never retried")
     invoice_verify = commands.add_parser("invoice-verify", help="5.1: read-only check of the linked Invoice's copied addresses, Order Date, items and totals")
     invoice_verify.add_argument("--tesseract", type=Path, default=Path("C:/Program Files/Tesseract-OCR/tesseract.exe"))
+    launch = commands.add_parser("launch", help="Start Fakturama if needed, size its window and bring it to the front")
+    launch.add_argument("--window", default="maximize", help="maximize (default) or WIDTHxHEIGHT, e.g. 1920x1080")
     order_return = commands.add_parser("order-return", help="Select and verify the retained unsaved Order")
     documents = commands.add_parser("documents-verify", help="Verify saved Order and optional Invoice in Data > Documents")
     for navigation in (debtor_open, order_return):
@@ -179,7 +188,7 @@ def parser():
     documents.add_argument("--invoice-number")
     documents.add_argument("--invoice-date", help="Saved Invoice Date as observed in its editor")
     documents.add_argument("--out", type=Path, required=True)
-    for live_product in (product_open, product_save):
+    for live_product in (product_open, product_save, vat_check, vat_create):
         live_product.add_argument("--input", type=Path, required=True)
         live_product.add_argument("--reviewed-input", action="store_true")
         live_product.add_argument("--pid", type=int, required=True)
@@ -197,7 +206,7 @@ def parser():
     selector.add_argument("--kind", choices=["debtor", "product"], required=True)
     selector.add_argument("--sku", help="Required for --kind product")
     order_open = commands.add_parser("order-open", help="1.3: toolbar 'Create: New Order' once; reports the proposed No.")
-    for live_cmd in (selector, order_open, invoice_verify):
+    for live_cmd in (selector, order_open, invoice_verify, pay_check, pay_create):
         live_cmd.add_argument("--input", type=Path, required=True)
         live_cmd.add_argument("--reviewed-input", action="store_true")
         live_cmd.add_argument("--pid", type=int, required=True)
@@ -333,6 +342,9 @@ def execute(args):
         if args.pid <= 0 or args.window_handle <= 0:
             raise ReviewRequired("invalid_window_identity")
         print(json.dumps(inspect_order_header(args.pid, args.window_handle, args.currency), indent=2))
+    elif args.command == "launch":
+        from .launcher import prepare
+        print(json.dumps(prepare(args.window), indent=2))
     elif args.command == "native-selector":
         report = inspect_native_selector(args.pid, args.title)
         write_private(args.out, json.dumps(report, ensure_ascii=False, indent=2))
@@ -643,16 +655,17 @@ def execute(args):
         print(json.dumps({"status": "PAYMENT_TABLE_COPIED_NOT_SAVED", "row_count": len(report["rows"]),
                           "lookup_result": report["lookup_result"],
                           "note": "Two fresh copies read. No fields changed or terms saved. Review private content before sharing."}))
-    elif args.command in {"order-finalize", "order-followup-invoice", "product-open-editor", "product-save", "invoice-pay",
+    elif args.command in {"order-finalize", "order-discount", "order-followup-invoice", "product-open-editor", "product-save", "invoice-pay",
                           "selector-check", "order-open", "order-line-prepare", "debtor-open-editor", "order-return",
-                          "documents-verify", "debtor-complete-prepare", "debtor-save", "invoice-verify"}:
+                          "documents-verify", "debtor-complete-prepare", "debtor-save", "invoice-verify",
+                          "vat-check", "vat-create", "payment-term-check", "payment-term-create"}:
         if not args.reviewed_input:
             raise ReviewRequired("live_document_reviewed_input_required")
         source = read_order(args.input)
         validate_order(source)
         if args.out.exists() or args.out.is_symlink():
             raise ReviewRequired("live_document_output_exists")
-        mutates = (args.command not in {"order-finalize", "documents-verify", "invoice-verify"}
+        mutates = (args.command not in {"order-finalize", "documents-verify", "invoice-verify", "vat-check", "payment-term-check"}
                    or getattr(args, "save", False))
         intent = args.out.with_name(args.out.name + ".intent.json")
         write_private(intent, json.dumps({"status": args.command.upper().replace("-", "_") + "_INTENT",
@@ -665,6 +678,9 @@ def execute(args):
             if args.command == "order-line-prepare":
                 report = prepare_order_line(args.pid, args.window_handle, source, args.expected_number,
                                             args.line_index, args.tesseract, diagnostics=diagnostics)
+            elif args.command == "order-discount":
+                report = apply_order_discount(args.pid, args.window_handle, source, args.expected_number,
+                                              diagnostics=diagnostics)
             elif args.command == "order-finalize":
                 report = finalize_order(args.pid, args.window_handle, source, args.expected_number,
                                         save=args.save, diagnostics=diagnostics)
@@ -681,6 +697,14 @@ def execute(args):
             elif args.command == "debtor-complete-prepare":
                 report = prepare_new_debtor(args.pid, args.window_handle, source, args.expected_id,
                                             diagnostics=diagnostics)
+            elif args.command == "payment-term-check":
+                report = check_payment(args.pid, args.window_handle, source, diagnostics=diagnostics)
+            elif args.command == "payment-term-create":
+                report = create_payment(args.pid, args.window_handle, source, diagnostics=diagnostics)
+            elif args.command == "vat-check":
+                report = check_vat(args.pid, args.window_handle, source, args.sku, diagnostics=diagnostics)
+            elif args.command == "vat-create":
+                report = create_vat(args.pid, args.window_handle, source, args.sku, diagnostics=diagnostics)
             elif args.command == "invoice-verify":
                 report = verify_invoice_deep(args.pid, args.window_handle, source, args.tesseract,
                                              diagnostics=diagnostics)

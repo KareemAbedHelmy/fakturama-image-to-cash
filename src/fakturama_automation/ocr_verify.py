@@ -25,6 +25,7 @@ W, H = 385, 529
 REGIONS = {
     'header': (24, 95, 360, 112), 'company': (24, 150, 200, 170), 'alias': (24, 174, 200, 190),
     'contact': (200, 150, 360, 200), 'payment': (24, 315, 360, 335), 'totals': (24, 478, 360, 500),
+    'billing_addr': (28, 236, 196, 276), 'delivery_addr': (200, 236, 362, 276),
 }
 
 
@@ -85,11 +86,14 @@ def verify_against_image(png: bytes, order: OrderInput, executable: Path):
         ('total_gross', f'EUR {order.totals.gross}', 'totals', True),
         ('company', d.company, 'company', False), ('alias', d.alias or '', 'alias', False),
         ('contact_first', d.first_name, 'contact', False), ('contact_last', d.last_name, 'contact', False),
+        # Street, ZIP and city as one run: a street that is really the recipient line is not followed by the ZIP.
+        ('billing_address', f'{d.billing.street} {d.billing.zip} {d.billing.city}', 'billing_addr', False),
+        ('delivery_address', f'{d.delivery.street} {d.delivery.zip} {d.delivery.city}', 'delivery_addr', False),
     ]
     rows, critical = [], []
     for field, expected, region, is_critical in checks:
         score = round(_score(expected, text[region]), 2)
-        ok = score >= (0.9 if is_critical else 0.75)
+        ok = score >= (0.9 if is_critical else 0.95 if field.endswith('_address') else 0.9)
         rows.append({'field': field, 'expected': expected, 'ocr_region': region, 'score': score,
                      'match': ok, 'critical': is_critical})
         if is_critical and not ok:
@@ -98,5 +102,5 @@ def verify_against_image(png: bytes, order: OrderInput, executable: Path):
             'critical_mismatches': critical, 'checks': rows,
             'soft_mismatches': [r['field'] for r in rows if not r['match'] and not r['critical']],
             'unverified_by_ocr': ['item lines (sku/description/qty/unit price/discount/VAT)',
-                                  'street/zip/city', 'email/phone'],
+                                  'email/phone'],
             'ocr_text': text}

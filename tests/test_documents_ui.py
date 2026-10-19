@@ -33,6 +33,17 @@ class DocumentsRowTests(unittest.TestCase):
                                                                   'COMMAND_CHECKED')),
                                 SOURCE, 'PO000004', 'order', SOURCE.order_date)
 
+    def test_unpaid_invoice_row_state(self):
+        unpaid = read_order(Path(__file__).resolve().parents[1] / 'examples' / 'order.sepa-unpaid.json')
+        row = ('ICON_INVOICE	INV000011	Sat Oct 17 00:00:00 EEST 2026	'
+               'Rheinblick Verlag GmbH, Anna Becker	WEB-2026-1005-E44	COMMAND_ERROR	107.0	null')
+        rows = parse_document_rows(row)
+        verified = verify_document_row(rows, unpaid, 'INV000011', 'invoice', rows[0]['date'])
+        self.assertEqual(verified['state'], 'COMMAND_ERROR')
+        with self.assertRaises(ReviewRequired):
+            verify_document_row(parse_document_rows(row.replace('COMMAND_ERROR', 'COMMAND_CHECKED')),
+                                unpaid, 'INV000011', 'invoice', rows[0]['date'])
+
     def test_changed_copy_schema_stops(self):
         with self.assertRaises(ReviewRequired):
             parse_document_rows('PO000004\t678.3')

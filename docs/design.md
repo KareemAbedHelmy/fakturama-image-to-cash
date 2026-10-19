@@ -10,7 +10,7 @@ only for a PAID order, its payment date and full value. No Delivery, Correction
 or Dunning document is ever created.
 
 Supported scope: EUR; Bank Transfer, Credit Card or SEPA Direct Debit; PAID with
-a date or UNPAID without one; zero order-level discount and shipping. Anything
+a date or UNPAID without one; an order-level discount percentage or none, and no shipping charge. Anything
 else (another currency, a partial payment, a nonzero overall charge, unreadable
 fields) stops for review. The design is a verified vertical slice first, then
 the missing-master branches, then multi-line orders and recovery.
@@ -66,9 +66,9 @@ bounds are used.
 3. For a missing Debtor, open New Contact while the Order stays open, keep the
    proposed customer ID, fill the fields, address roles, separate delivery
    address, alias, Net and the payment method, save once, return to the same
-   Order and re-select the saved Debtor. A missing payment term or VAT record
-   is created first with exact names and values (an operator step in the
-   current implementation).
+   Order and re-select the saved Debtor. A missing payment term is created first, before
+   the Debtor editor is opened (that editor reads its payment list only once), and a missing VAT record before
+   its Product, each with exact names and values and one Save.
 4. For every line, search the Product selector by exact SKU. Fakturama closes the
    dialog and adds the line itself when exactly one product matches. A missing
    Product is created with the source SKU and description and the computed gross

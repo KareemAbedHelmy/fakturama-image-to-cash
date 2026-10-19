@@ -53,6 +53,14 @@ class InputExtractionTests(unittest.TestCase):
                 self.assertEqual(result.format, "PNG")
             self.assertEqual(len(digest), 64)
 
+    def test_transparent_background_becomes_a_white_page(self):
+        with TemporaryDirectory() as folder:
+            path = Path(folder)/"alpha.png"
+            Image.new("RGBA", (100, 100), (0, 0, 0, 0)).save(path)
+            clean, _ = sanitize_image(path)
+            with Image.open(io.BytesIO(clean)) as result:
+                self.assertEqual(result.convert("RGB").getpixel((50, 50)), (255, 255, 255))
+
     def test_non_image_rejected(self):
         with TemporaryDirectory() as folder:
             path = Path(folder)/"bad.png"
@@ -98,11 +106,13 @@ class InputExtractionTests(unittest.TestCase):
         conn = FakeConnection(FakeResponse(envelope))
         with patch("fakturama_automation.extraction.http.client.HTTPConnection", return_value=conn) as factory:
             result = extract_local_vision(b"clean png", "local-vision:latest")
-            factory.assert_called_once_with("127.0.0.1", 11434, timeout=120)
+            factory.assert_called_once_with("127.0.0.1", 11434, timeout=360)
         self.assertEqual(result.external_reference, fixture()["external_reference"])
         self.assertTrue(conn.closed)
         payload = json.loads(conn.requests[0][1]["body"])
         self.assertFalse(payload["stream"])
+        self.assertFalse(payload["think"])
+        self.assertEqual(payload["options"]["num_ctx"], 8192)
         self.assertFalse(payload["format"]["additionalProperties"])
         self.assertEqual(payload["format"]["$defs"]["Item"]["properties"]["unit_net"]["type"], "string")
         self.assertNotIn("tools", payload)

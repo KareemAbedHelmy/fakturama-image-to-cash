@@ -8,9 +8,10 @@ copies verify committed cells, including values clipped off screen.
 import io
 import re
 import time
+from collections import Counter
 from dataclasses import replace
 from decimal import Decimal
-from PIL import ImageOps
+from PIL import Image, ImageOps
 
 from .errors import ReviewRequired
 from .finance import validate_order
@@ -100,12 +101,13 @@ def ground_cells(words, sku, expected_skus=None):
 def _grid(root, editor_name='New Order'):
     editor = unique_control(root, Locator('Pane', name=editor_name))
     label = unique_control(editor, Locator('Text', name='Items'))
+    # Scrollbars exist only when the grid overflows, so a grid may have no children at all.
     grids = [c for c in label.parent().parent().descendants(control_type='Pane')
              if c.is_visible() and c.is_enabled() and c.handle
              and c.element_info.class_name == 'SWT_Window0'
              and c.rectangle().top >= label.rectangle().top
              and c.rectangle().left > label.rectangle().right
-             and any(k.element_info.control_type == 'ScrollBar' for k in c.children())
+             and c.rectangle().width() > 300 and c.rectangle().height() > 100
              and all(k.element_info.control_type in {'ScrollBar', 'Edit'} for k in c.children())]
     return _one(grids, 'grid')
 
@@ -138,16 +140,33 @@ def grid_words(image, executable, skus):
         lut = [0 if value > 230 else 255 for value in range(256)] if 60 < background < 230 else [
             0 if value < 100 else 255 for value in range(256)]
         grey.paste(row.point(lut), (0, y))
-    for candidate in read(grey):
-        threshold = 70 if candidate.text in skus else 60
-        if (candidate.text not in {*skus, 'Qty.', 'Item', 'Picture', 'U.Price', 'Discount', 'Price'}
-                or candidate.confidence < threshold):
-            continue
-        same = [w for w in words if w.text == candidate.text and
-                max(w.top, candidate.top) < min(w.top + w.height, candidate.top + candidate.height)]
-        if same and max(w.confidence for w in same) >= candidate.confidence:
-            continue
-        words = [w for w in words if w not in same] + [candidate]
+    def merge(candidates):
+        nonlocal words
+        for candidate in candidates:
+            threshold = 70 if candidate.text in skus else 60
+            if (candidate.text not in {*skus, 'Qty.', 'Item', 'Picture', 'U.Price', 'Discount', 'Price'}
+                    or candidate.confidence < threshold):
+                continue
+            same = [w for w in words if w.text == candidate.text and
+                    max(w.top, candidate.top) < min(w.top + w.height, candidate.top + candidate.height)]
+            if same and max(w.confidence for w in same) >= candidate.confidence:
+                continue
+            words = [w for w in words if w not in same] + [candidate]
+
+    merge(read(grey))
+    need = Counter(skus)
+    have = Counter(w.text for w in words if w.text in need and w.confidence >= 70)
+    if any(have[sku] < count for sku, count in need.items()):
+        # The hard threshold above can leave noise in the last glyph of a highlighted SKU. Re-read with each
+        # highlighted stripe (one mid-grey fill over a fifth of the scanline) inverted softly, at twice the size.
+        soft = ImageOps.grayscale(image)
+        for y in range(soft.height):
+            row = soft.crop((0, y, soft.width, y + 1))
+            histogram = row.histogram()
+            if histogram[max(range(60, 230), key=histogram.__getitem__)] >= soft.width // 5:
+                soft.paste(ImageOps.invert(row), (0, y))
+        merge([replace(w, left=w.left // 2, top=w.top // 2, width=w.width // 2, height=w.height // 2)
+               for w in read(soft.resize((soft.width * 2, soft.height * 2), Image.LANCZOS))])
     positions = [w for w in words if w.text == 'Pos.' and w.confidence >= 70]
     if len(positions) == 1:
         pos = positions[0]
@@ -261,6 +280,17 @@ def complete_line(source, line_index, driver, diagnostics):
         for other in ('quantity', 'unit_net', 'discount_percent', 'vat_percent'):
             if other != role and rows[-1][other] != before[-1][other]:
                 raise ReviewRequired('order_line_unrelated_cell_changed')
+    if rows[-1]['unit_net'] == item.unit_net and rows[-1]['source_line_net'] != item.source_line_net:
+        # A product master priced from a rounded gross (net 18.50 x 1.05 -> 19.43) gives the line a net a
+        # fraction off the shown U.Price. Entering the exact source U.Price once makes the line total exact.
+        progress['phase'] = 'write_unit_net_exact'
+        progress['writes_attempted'].append('unit_net')
+        before = rows
+        driver.write('unit_net', item.unit_net)
+        rows = driver.read()
+        verify_prefix(rows, source, line_index, complete=False)
+        if rows[:-1] != before[:-1]:
+            raise ReviewRequired('order_line_write_not_committed_or_other_row_changed')
     verify_prefix(rows, source, line_index, complete=True)
     progress['phase'] = 'complete'
     return {'status': 'ORDER_LINE_PREPARED_UNSAVED', 'line_index': line_index,

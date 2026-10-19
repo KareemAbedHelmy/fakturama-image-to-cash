@@ -230,6 +230,18 @@ def save_new_debtor_scope(root, source, expected_id, guard, *, diagnostics=None)
     button, tabs = _button(root, 'Save the current contents')
     if sum(t in DEBTOR_TABS for t in tabs) != 1:
         raise ReviewRequired('debtor_save_editor_tab_missing_or_ambiguous')
+    # Fakturama commits the Company field only when focus leaves it; saving straight after a UIA write
+    # persisted the contact with an empty company. Tab would type a tab character into this field, so
+    # focus is moved by clicking the read-only Customer ID field instead.
+    pane = unique_control(root, Locator('Pane', name='New Debtor'))
+    company = unique_control(pane, Locator('Edit', name='Company'))
+    guard()
+    company.click_input()
+    unique_control(pane, Locator('Edit', name='Customer ID')).click_input()
+    time.sleep(.4)
+    guard()
+    if company.iface_value.CurrentValue != source.debtor.company:
+        raise ReviewRequired('debtor_save_company_not_in_editor')
     progress['phase'] = 'save'
     progress['save_invoked'] = True  # recorded before invoking; never retried
     try:

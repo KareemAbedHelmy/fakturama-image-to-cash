@@ -36,13 +36,22 @@ def _activate_tab(tab, name, guard):
     from .selector_vision import ocr_words
     parent = tab.parent()
     rect = parent.rectangle()
-    image = parent.capture_as_image()
-    if image.size != (rect.width(), rect.height()):
-        raise ReviewRequired('order_address_capture_scale_mismatch')
-    output = io.BytesIO()
-    image.save(output, format='PNG')
-    words, _ = ocr_words(output.getvalue(), Path('C:/Program Files/Tesseract-OCR/tesseract.exe'))
-    point = address_tab_point(words, name)
+    # Only the reading is repeated: the tab strip can still be redrawing right after the selector closes.
+    for attempt in range(3):
+        image = parent.capture_as_image()
+        if image.size != (rect.width(), rect.height()):
+            raise ReviewRequired('order_address_capture_scale_mismatch')
+        output = io.BytesIO()
+        image.save(output, format='PNG')
+        words, _ = ocr_words(output.getvalue(), Path('C:/Program Files/Tesseract-OCR/tesseract.exe'))
+        try:
+            point = address_tab_point(words, name)
+            break
+        except ReviewRequired as exc:
+            if exc.code != 'order_address_caption_missing_or_ambiguous' or attempt == 2:
+                raise
+            time.sleep(1.5)
+            guard()
     guard()
     if parent.rectangle() != rect:
         raise ReviewRequired('order_address_tabs_moved')

@@ -53,6 +53,13 @@ class LineTests(unittest.TestCase):
         complete_line(SOURCE, 1, driver, {})
         self.assertEqual(driver.writes, [('unit_net', Decimal(250))])
 
+    def test_rounded_master_price_line_total_is_made_exact(self):
+        item = SOURCE.items[0]
+        driver = Driver([{**expected(item), 'source_line_net': item.source_line_net + Decimal('0.01')}])
+        complete_line(SOURCE, 1, driver, {})
+        self.assertEqual(driver.writes, [('unit_net', item.unit_net)])
+        self.assertEqual(driver.rows[0]['source_line_net'], item.source_line_net)
+
     def test_matching_line_has_no_writes(self):
         driver = Driver([expected(SOURCE.items[0])])
         complete_line(SOURCE, 1, driver, {})
@@ -125,6 +132,16 @@ class LineTests(unittest.TestCase):
         self.assertEqual([w.text for w in result].count('CHR-ERG-01'), 1)
         self.assertIn(contrast[1], result)
         self.assertIn(raw[1], result)
+
+    def test_highlighted_third_row_of_a_real_capture_is_read(self):
+        from pathlib import Path
+        tesseract = Path('C:/Program Files/Tesseract-OCR/tesseract.exe')
+        if not tesseract.is_file():
+            self.skipTest('Tesseract is not installed')
+        image = Image.open(Path(__file__).parent / 'fixtures' / 'item-grid-three-rows-selected.png').convert('RGB')
+        skus = ['CHR-ERG-01', 'MAT-DESK-02', 'CHR-ERG-01']
+        cells = ground_cells(grid_words(image, tesseract, skus), skus[-1], skus)
+        self.assertGreater(cells['position'][1], 150)  # the third row, below rows one and two
 
     def test_numeric_editor_commits_on_leaving_cell_after_enter(self):
         driver = object.__new__(ItemGridDriver)

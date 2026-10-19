@@ -1,0 +1,62 @@
+{
+  "order_date": "2026-10-19",
+  "external_reference": "WEB-2026-1019-G61",
+  "source_customer_id": "CUST-4520",
+  "currency": "EUR",
+  "debtor": {
+    "company": "Birkenhof Buchhandlung GmbH",
+    "first_name": "Clara",
+    "last_name": "Neumann",
+    "alias": "BIRKENHOF-HAMBURG",
+    "salutation": null,
+    "billing": {
+      "recipient_name": "Birkenhof Buchhandlung GmbH",
+      "street": "Elbchaussee 12",
+      "zip": "22763",
+      "city": "Hamburg",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": "clara.neumann@example.com",
+      "telephone": "+49 40 5550 7712"
+    },
+    "delivery": {
+      "recipient_name": "Birkenhof Lager",
+      "street": "Speicherstrasse 4",
+      "zip": "20457",
+      "city": "Hamburg",
+      "country": "Germany",
+      "additional_name": null,
+      "specification": null,
+      "district": null,
+      "email": null,
+      "telephone": null
+    }
+  },
+  "payment": {
+    "method": "Bank Transfer",
+    "status": "PAID",
+    "date": "2026-10-20"
+  },
+  "items": [
+    {
+      "sku": "BKS-PLAN-05",
+      "description": "Weekly Desk Planner",
+      "quantity": "3",
+      "unit": "pcs",
+      "unit_net": "18.50",
+      "vat_percent": "5",
+      "discount_percent": "0",
+      "source_line_net": "55.50"
+    }
+  ],
+  "order_discount_percent": "0",
+  "shipping_net": "0.00",
+  "totals": {
+    "net": "55.50",
+    "vat": "2.78",
+    "gross": "58.28"
+  },
+  "review_issues": []
+}

@@ -47,9 +47,7 @@ def verify_document_row(rows, source, number, kind, expected_date):
         raise ReviewRequired('documents_number_missing_or_ambiguous')
     row = matches[0]
     expected_state = ('COMMAND_ORDER_PENDING' if kind == 'order' else
-                      'COMMAND_CHECKED' if source.payment.status == 'PAID' else None)
-    if expected_state is None:
-        raise ReviewRequired('documents_unpaid_state_not_observed')
+                      'COMMAND_CHECKED' if source.payment.status == 'PAID' else 'COMMAND_ERROR')
     if (row['kind'] != ('ICON_ORDER' if kind == 'order' else 'ICON_INVOICE')
             or row['date'] != expected_date or row['reference'] != source.external_reference
             or row['state'] != expected_state or row['total'] != source.totals.gross

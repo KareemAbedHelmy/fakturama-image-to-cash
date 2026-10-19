@@ -11,7 +11,7 @@ nothing. Save and the toggle are each attempted once and never retried.
 
 from .combo_ui import read_combo_options, select_combo_exact
 from .errors import ReviewRequired
-from .finance import validate_order
+from .finance import items_subtotal, validate_order
 from .order_date_ui import SegmentedDateDriver, segmented_date
 from .order_finalize_ui import _editor, _guard_factory, _snapshot, _wait, parse_display_amount, read_document
 from .order_ui import Tree, one
@@ -82,7 +82,7 @@ def verify_invoice(state, source):
     values = state['doc']['values']
     if values.get('reference') != source.external_reference:
         issues.append('reference_not_copied')
-    for role, expected in (('subtotal_text', source.totals.net), ('vat_total_text', source.totals.vat),
+    for role, expected in (('subtotal_text', items_subtotal(source)), ('vat_total_text', source.totals.vat),
                            ('total_text', source.totals.gross)):
         try:
             if parse_display_amount(values.get(role)) != expected:

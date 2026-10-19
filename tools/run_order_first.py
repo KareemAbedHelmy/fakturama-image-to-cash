@@ -11,10 +11,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from fakturama_automation.finance import product_gross, validate_order  # noqa: E402
+from fakturama_automation import launcher  # noqa: E402
 from fakturama_automation.input_io import read_order  # noqa: E402
 from fakturama_automation.uia import discover_fakturama_windows  # noqa: E402
 
-DELAY = 5
+DELAY = 2
 
 
 def window():
@@ -34,6 +35,8 @@ class Run:
         (ROOT / self.out).mkdir(parents=True)
         self.step = 0
         self.input = None
+        self.yes = False
+        self.hint = ''  # how to resume if the current stage stops
 
     def operator(self, title, *lines):
         print(f"\n=== OPERATOR: {title}")
@@ -41,7 +44,11 @@ class Run:
             print("   -", line)
         input("   Press Enter when done (Ctrl+C to stop)... ")
 
-    def ask(self, question):
+    def ask(self, question, *, creation=False):
+        """y/n prompt. --yes answers only the safe 'create the missing record' confirmations."""
+        if creation and self.yes:
+            print(f"   {question} -> yes (--yes)")
+            return True
         while True:
             answer = input(f"   {question} [y/n]: ").strip().casefold()
             if answer in {"y", "n"}:
@@ -53,9 +60,10 @@ class Run:
         optional=True is for read-only checks: a failure is reported and the run continues."""
         self.step += 1
         print(f"\n=== AUTO {self.step}: {title}")
-        print(f"   Keep Fakturama in the foreground; starting in {DELAY}s...", flush=True)
-        time.sleep(DELAY)
         pid, handle = window()
+        launcher.bring_to_front(int(handle))
+        print(f"   Fakturama brought to the front; starting in {DELAY}s. Leave the mouse and keyboard alone.", flush=True)
+        time.sleep(DELAY)
         out = self.out / f"{self.step:02d}-{command}.json"
         code = cli(command, "--input", self.input, "--reviewed-input", *args,
                    "--pid", pid, "--window-handle", handle, "--out", str(out))
@@ -66,7 +74,8 @@ class Run:
             return report
         if code != 0:
             sys.exit(f"\nStopped at '{title}' ({report.get('code', code)}). Report: {out}. "
-                     "Inspect Fakturama; never re-run a Save blindly.")
+                     "Inspect Fakturama; never re-run a Save blindly."
+                     + (chr(10) * 2 + f"How to resume: {self.hint}" if self.hint else ""))
         print(f"   -> {report.get('status')}")
         return report
 
@@ -80,30 +89,56 @@ class Run:
             print(f"   (evidence capture '{label}' timed out and was skipped)")
 
 
-def extract(run, image, compare):
+def extract(run, image, compare, provider="claude", model=None):
     target = run.out / "extracted.json"
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    if provider == "claude" and not os.environ.get("ANTHROPIC_API_KEY"):
         sys.exit("Set ANTHROPIC_API_KEY first (or use --input with a reviewed JSON).")
-    print(f"=== AUTO: extract {image} with Claude vision")
-    if cli("extract", "--image", image, "--out", str(target)) != 0:
+    if provider == "ollama" and not model:
+        sys.exit("--provider ollama requires --model with an installed local vision model.")
+    print(f"=== AUTO: extract {image} with {provider} vision (a local model can take several minutes)", flush=True)
+    command = ["extract", "--provider", provider, "--image", image, "--out", str(target)]
+    if model:
+        command.extend(["--model", model])
+    if cli(*command) != 0:
         sys.exit("Extraction needs review; nothing was sent to Fakturama.")
-    if cli("validate", str(target)) != 0:
-        sys.exit("Extracted totals do not reconcile; review the image. Nothing was sent to Fakturama.")
     data = json.loads((ROOT / target).read_text(encoding="utf-8"))
-    print(json.dumps(data, indent=2, ensure_ascii=False))
+    issues = data.get("review_issues") or []
+    confirmed = run.out / "confirmed.json"
+    confirmed.write_text(json.dumps({**data, "review_issues": []}, indent=2, ensure_ascii=False), encoding="utf-8")
+    if cli("validate", str(confirmed)) != 0:
+        sys.exit("Extracted totals do not reconcile; review the image. Nothing was sent to Fakturama.")
+    print(json.dumps({**data, "review_issues": []}, indent=2, ensure_ascii=False))
     if compare:
         expected = json.loads((ROOT / compare).read_text(encoding="utf-8"))
-        diffs = [k for k in expected if expected[k] != data.get(k)]
+        diffs = [k for k in expected if k != "review_issues" and expected[k] != data.get(k)]
         print(f"   Differences vs {compare}: {diffs or 'none'}")
-    if data.get("review_issues"):
-        print("   Extractor review issues:", data["review_issues"])
+    if issues:
+        print("   The model flagged these for your attention:")
+        for issue in issues:
+            print("    -", issue)
+    verify_out = run.out / "ocr-verify-extraction.json"
+    cli("ocr-verify", "--image", image, "--input", str(confirmed), "--out", str(verify_out))
+    if (ROOT / verify_out).is_file():
+        report = json.loads((ROOT / verify_out).read_text(encoding="utf-8"))
+        flagged = report["critical_mismatches"] + report["soft_mismatches"]
+        if flagged:
+            print("   OCR (an independent reader) disagrees with the extraction on:", ", ".join(flagged))
+            print("   Check those fields against the image before answering.")
+        else:
+            print("   OCR cross-check agrees with the extraction on the fields it can read.")
+    else:
+        print("   OCR cross-check could not run; check every field against the image yourself.")
     if not run.ask("Extraction checked against the image and correct?"):
-        sys.exit(f"Correct {target} by hand and re-run with --input {target}.")
+        sys.exit(f"Correct {confirmed} by hand and re-run with --input {confirmed}.")
+    target = confirmed
     return str(target)
 
 
 def finish_invoice(run, number):
     """After the Order is saved: Documents check, linked Invoice, payment, final checks."""
+    run.hint = (f"The Order {number} is saved. Open Data > Documents first. If an Invoice for this Order already exists, "
+                "finish or fix that Invoice by hand: --order-saved would invoke the follow-up again and create a second "
+                f"Invoice. If there is no Invoice yet, re-run the same command and add: --resume-number {number} --order-saved")
     run.capture("order-saved")
     run.auto("Verify saved open Order in Data > Documents (4.5)",
              "documents-verify", "--expected-number", number, optional=True)
@@ -127,16 +162,31 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--image", help="Order image (PNG/JPEG); required unless --no-ocr-check")
     parser.add_argument("--input", help="Reviewed extraction JSON; OCR cross-checks it against the image. "
-                        "Without it, Claude vision extracts (needs ANTHROPIC_API_KEY).")
-    parser.add_argument("--compare", help="Optional reviewed JSON to diff a Claude extraction against")
+                        "Without it, the selected vision provider extracts the image; Claude needs ANTHROPIC_API_KEY.")
+    parser.add_argument("--compare", help="Optional reviewed JSON to diff the vision extraction against")
+    parser.add_argument("--provider", choices=["claude", "ollama"], default="claude",
+                        help="Image extraction provider when --input is omitted (default: claude)")
+    parser.add_argument("--model", help="Vision model for --provider; required for local Ollama")
     parser.add_argument("--no-ocr-check", action="store_true",
                         help="Variant test order with no matching image: skip the OCR cross-check (JSON is used as given)")
     parser.add_argument("--resume-debtor", help="Customer ID of an already open, unsaved New Debtor (needs --resume-number)")
     parser.add_argument("--order-saved", action="store_true",
                         help="The Order (--resume-number) is already saved; continue with the Documents check and the Invoice")
+    parser.add_argument("--debtor-done", action="store_true",
+                        help="The Debtor is already selected in the open Order; continue with the products (needs --resume-number)")
+    parser.add_argument("--resume-line", type=int,
+                        help="Debtor and products up to this 1-based line are already in the open Order; continue with that line's Qty./Discount (needs --resume-number)")
+    parser.add_argument("--yes", action="store_true",
+                        help="Create a missing Debtor/Product without asking (the selector check already proved it absent). "
+                             "The extraction confirmation is never skipped")
+    parser.add_argument("--window", default="maximize",
+                        help="Fakturama window size: maximize (default) or WIDTHxHEIGHT, e.g. 1920x1080")
+    parser.add_argument("--no-launch", action="store_true",
+                        help="Do not start or resize Fakturama; use the window that is already open")
     parser.add_argument("--resume-number", help="Skip opening/header: the New Order with this No. is already open and prepared")
     args = parser.parse_args()
     run = Run()
+    run.yes = args.yes
     if args.input and args.no_ocr_check:
         print("=== OCR cross-check skipped (--no-ocr-check): the JSON has no matching image")
         run.input = args.input
@@ -152,15 +202,22 @@ def main():
     else:
         if not args.image:
             sys.exit("--image is required for extraction")
-        run.input = extract(run, args.image, args.compare)
+        run.input = extract(run, args.image, args.compare, args.provider, args.model)
     s = read_order(ROOT / run.input)
     validate_order(s)
     print(f"\nSource: {s.external_reference}, {len(s.items)} line(s), total {s.totals.gross} {s.currency}, "
           f"{s.payment.method} {s.payment.status}. Reports: {run.out}")
-    if not args.resume_number:
-        run.operator("Prepare", "Fakturama open with no New Order/New product editors open; close finished editors.")
+    launched = False
+    if not args.no_launch:
+        info = launcher.prepare(args.window)
+        launched = info["launched"]
+        print(f"   Fakturama {'started' if launched else 'found'} (pid {info['pid']}); window: {args.window}")
+    if not args.resume_number and not launched:
+        run.operator("Prepare", "Close any open New Order/New Debtor/New product editors and finished documents.")
 
     # 1. Open the Order first and fill its header.
+    run.hint = ("the Order header is not finished. Close the New Order tab without saving and start again "
+                "(no resume flag is safe at this point).")
     if args.resume_number:
         number = args.resume_number
         print(f"   Resuming with the already open, header-prepared Order {number}.")
@@ -177,7 +234,17 @@ def main():
         return
 
     # 2. Debtor: the Order's address selector is the existence check.
-    if args.resume_debtor:
+    run.hint = (f"re-run the same command and add: --resume-number {number}  (the Debtor is checked again and is "
+                "selected if it already exists; if a New Debtor editor is still open and unsaved, close it first, "
+                "or add --resume-debtor CUSTNNNNNN with its customer ID). If the report of the Debtor Save says "
+                "save_invoked: true, the Debtor exists: close its tab and use the plain --resume-number form.")
+    if args.debtor_done:
+        found = {"status": "SELECTED_EXISTING"}
+        print("   Resuming after the Debtor: it is already selected in the Order.")
+    elif args.resume_line:
+        found = {"status": "SELECTED_EXISTING"}
+        print(f"   Resuming at line {args.resume_line}: the Debtor and earlier products are already in the Order.")
+    elif args.resume_debtor:
         found = {"status": "NOT_FOUND"}
         created = {"generated_id": args.resume_debtor}
         print(f"   Resuming with the already open New Debtor {args.resume_debtor}.")
@@ -186,8 +253,18 @@ def main():
     if found["status"] == "NOT_FOUND":
         if not args.resume_debtor:
             print(f"   No exact Debtor row for '{s.debtor.company}'. Rows seen: {found.get('rows')}")
-            if not run.ask("Confirm the Debtor really does not exist and should be created?"):
+            if not run.ask("Confirm the Debtor really does not exist and should be created?", creation=True):
                 sys.exit("Stopped before creating a Debtor.")
+            # The New Debtor editor reads its payment list once, when it opens, so a missing term is created first.
+            pay = run.auto(f"Payment term '{s.payment.method}' check in Data > terms of payment (2.10)",
+                           "payment-term-check")
+            if pay["status"] == "PAYMENT_MISSING":
+                run.auto(f"Create the '{s.payment.method}' term of payment and Save once (2.10)", "payment-term-create")
+                again_pay = run.auto("Confirm the term in Data > terms of payment", "payment-term-check")
+                if again_pay["status"] != "PAYMENT_EXISTS":
+                    sys.exit(f"'{s.payment.method}' not found after creation; review.")
+                run.auto("Return to the retained Order after the term (2.10.6)", "order-return",
+                         "--expected-number", number)
             created = run.auto("Open New Debtor while retaining the Order (2.5)",
                                "debtor-open-editor", "--expected-number", number)
         run.auto("Prepare New Debtor fields, roles and payment (2.6-2.10)",
@@ -200,15 +277,29 @@ def main():
 
     # 3. Every Product line, in source order.
     for index, item in enumerate(s.items, 1):
-        found = run.auto(f"Product {index}/{len(s.items)} selector check: {item.sku} (3.2-3.3)",
-                         "selector-check", "--kind", "product", "--sku", item.sku)
+        if args.resume_line and index < args.resume_line:
+            continue
+        before = "--debtor-done" if index == 1 else f"--resume-line {index - 1}"
+        run.hint = (f"count the lines in the Order's item list first. Re-run the same command and add "
+                    f"--resume-number {number} plus: --resume-line {index} if line {index} ({item.sku}) is already "
+                    f"in the Order (continue with its Qty./Discount); {before} if it is not there yet "
+                    "(selecting a product adds a line every time, so using the wrong flag adds a duplicate line). "
+                    "If a New product or VAT editor is open and unsaved, close it first.")
+        if args.resume_line == index:
+            found = {"status": "SELECTED_EXISTING"}
+        else:
+            found = run.auto(f"Product {index}/{len(s.items)} selector check: {item.sku} (3.2-3.3)",
+                             "selector-check", "--kind", "product", "--sku", item.sku)
         if found["status"] == "NOT_FOUND":
             print(f"   No exact row for SKU {item.sku}.")
-            if not run.ask(f"Confirm {item.sku} does not exist and should be created?"):
+            if not run.ask(f"Confirm {item.sku} does not exist and should be created?", creation=True):
                 sys.exit("Stopped before creating a Product.")
-            run.operator(f"VAT check (3.4-3.6)", f"Data > VATs: exactly one 'VAT {item.vat_percent.normalize()}%', "
-                         f"value {item.vat_percent}%, code S. Create it (Save once) only if missing. "
-                         "Return to the Order tab.")
+            vat = run.auto(f"VAT {item.vat_percent.normalize()}% check in Data > VATs (3.4)", "vat-check", "--sku", item.sku)
+            if vat["status"] == "VAT_MISSING":
+                run.auto(f"Create {vat['name']} and Save once (3.5-3.6)", "vat-create", "--sku", item.sku)
+                again_vat = run.auto(f"Confirm {vat['name']} in Data > VATs", "vat-check", "--sku", item.sku)
+                if again_vat["status"] != "VAT_EXISTS":
+                    sys.exit(f"{vat['name']} not found after creation; review.")
             run.auto(f"Open New product for {item.sku} (3.7)", "product-open-editor", "--sku", item.sku)
             run.auto(f"Fill {item.sku}, gross {product_gross(item)} (3.8-3.10)", "product-prepare",
                      "--reviewed-vat", "--sku", item.sku)
@@ -221,7 +312,15 @@ def main():
         run.auto(f"Apply extracted quantity/discount and verify line {index}: {item.sku} (3.13-3.16)",
                  "order-line-prepare", "--expected-number", number, "--line-index", str(index))
 
-    # 4. Verify, Save once, linked Invoice from the follow-up area.
+    # 4. Verify, Save once, linked Invoice from the follow-up area. Selecting the Debtor resets the Order's
+    # overall Discount to the contact's, so a source discount is set here, after the Debtor and the lines.
+    run.hint = (f"is the Order saved (its tab shows {number} without a * and Data > Documents lists it)? If yes, check "
+                f"Documents for an Invoice first, then add --resume-number {number} --order-saved (only if there is "
+                f"no Invoice yet). If not saved, re-run the same command and add --resume-number {number} "
+                f"--resume-line {len(s.items)}.")
+    if s.order_discount_percent != 0:
+        run.auto(f"Set the Order discount to {s.order_discount_percent}% (4.2)", "order-discount",
+                 "--expected-number", number)
     run.auto("Verify Order vs source and Save once (4.1-4.4)", "order-finalize", "--expected-number", number, "--save")
     finish_invoice(run, number)
 

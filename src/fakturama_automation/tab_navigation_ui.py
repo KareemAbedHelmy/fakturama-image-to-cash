@@ -68,17 +68,26 @@ def select_tab(scope, captions, guard, *, tesseract=Path('C:/Program Files/Tesse
             if not current().iface_selection_item.CurrentIsSelected:
                 parent = tab.parent()
                 rect = parent.rectangle()
-                image = parent.capture_as_image()
-                if image.size != (rect.width(), rect.height()):
-                    raise ReviewRequired('tab_navigation_capture_scale_mismatch')
                 from .order_items_ui import grid_words
                 caption = next(c for c in captions if c == tab.element_info.name)
                 number_or_order = bool(re.fullmatch(r'[A-Za-z]+\d{6,}', caption.lstrip('*'))
                                        or caption.lstrip('*') == 'New Order')
-                bottom = min(image.height, 75) if number_or_order else image.height
-                words = grid_words(image.crop((0, 0, image.width, bottom)),
-                                   tesseract, [caption.lstrip('*')])
-                point = tab_caption_point(words, caption.lstrip('*'))
+                # Only the reading is repeated: the strip can still be redrawing right after an editor closes.
+                for attempt in range(3):
+                    image = parent.capture_as_image()
+                    if image.size != (rect.width(), rect.height()):
+                        raise ReviewRequired('tab_navigation_capture_scale_mismatch')
+                    bottom = min(image.height, 75) if number_or_order else image.height
+                    words = grid_words(image.crop((0, 0, image.width, bottom)),
+                                       tesseract, [caption.lstrip('*')])
+                    try:
+                        point = tab_caption_point(words, caption.lstrip('*'))
+                        break
+                    except ReviewRequired as exc:
+                        if exc.code != 'tab_navigation_caption_missing_or_ambiguous' or attempt == 2:
+                            raise
+                        time.sleep(1.5)
+                        guard()
                 guard()
                 if parent.rectangle() != rect:
                     raise ReviewRequired('tab_navigation_tabs_moved')

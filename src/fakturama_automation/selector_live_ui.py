@@ -23,26 +23,70 @@ from .order_finalize_ui import _snapshot
 DIALOGS = {'debtor': ('Addresses', 'Select the address'), 'product': ('Items', 'Select a product')}
 
 
-def grid_has_rows(image, *, dark=110, footer=60):
-    """True if dark text appears below the header band of a captured result grid.
+def grid_has_rows(image, *, delta=100, footer=60, min_bar=8, coverage=0.2, border=6):
+    """True if anything other than background appears below the header of a captured result grid.
 
-    Fakturama throws an NPE ('copiedCells is null') if Copy is sent to an EMPTY
-    grid, so emptiness must be established from pixels before any Select All/Copy.
-    The header is the first contiguous band of dark rows from the top; the
-    horizontal scrollbar at the bottom is excluded.
+    Fakturama throws an NPE ('copiedCells is null') if Copy is sent to an EMPTY grid, so emptiness must
+    be established from pixels before any Select All/Copy. The header is a bar of at least `min_bar`
+    consecutive rows in which one non-background colour covers `coverage` of the width, plus a few rows of
+    border (or, without such a bar, the first band of text rows). Below it, any pixel that differs strongly from the background
+    counts: dark text, or light text on a selection colour. Faint grid lines (about 64 grey levels off the
+    background) stay below `delta`; the scrollbar footer is excluded.
     """
     gray = image.convert('L')
     width, height = gray.size
     pixels = gray.load()
-    dark_rows = [any(pixels[x, y] < dark for x in range(width)) for y in range(max(0, height - footer))]
+    histogram = gray.histogram()
+    background = max(range(256), key=histogram.__getitem__)
+    usable = max(0, height - footer)
+    fill = []  # dominant non-background colour of a row when it spans enough of the width, else None
+    for y in range(usable):
+        counts = {}
+        for x in range(width):
+            value = pixels[x, y]
+            if abs(value - background) > 10:
+                counts[value] = counts.get(value, 0) + 1
+        top = max(counts, key=counts.__getitem__) if counts else None
+        fill.append(top if top is not None and counts[top] >= coverage * width else None)
+    content = [any(abs(pixels[x, y] - background) > delta for x in range(width)) for y in range(usable)]
+    end = None
     y = 0
-    while y < len(dark_rows) and not dark_rows[y]:
-        y += 1  # blank margin above the header text
-    gap = 0
-    while y < len(dark_rows) and gap <= 3:  # header text band; tolerate thin gaps inside it
-        gap = 0 if dark_rows[y] else gap + 1
-        y += 1
-    return any(dark_rows[y:])
+    while y < usable:
+        if fill[y] is not None:
+            run = y
+            while run < usable and fill[run] is not None and abs(fill[run] - fill[y]) <= 10:
+                run += 1
+            if run - y >= min_bar:
+                end = run + border  # the bar's bottom border rules belong to the header
+                break
+            y = max(run, y + 1)
+        else:
+            y += 1
+    if end is None:
+        end = 0
+        while end < usable and not content[end]:
+            end += 1  # blank margin above the header text
+        gap = 0
+        while end < usable and gap <= 3:
+            gap = 0 if content[end] else gap + 1
+            end += 1
+    return any(content[end:])
+
+
+def _settled_has_rows(grid, *, timeout=8.0, interval=0.5, needed=3):
+    """grid_has_rows once the answer has been the same for `needed` captures in a row.
+
+    The dialog filters the list a moment after the search text is set; judging too early can
+    see the old rows and then Copy from a grid that has just emptied.
+    """
+    answers, deadline = [], time.monotonic() + timeout
+    while True:
+        answers.append(grid_has_rows(grid.capture_as_image()))
+        if len(answers) >= needed and len(set(answers[-needed:])) == 1:
+            return answers[-1]
+        if time.monotonic() > deadline:
+            raise ReviewRequired('selector_grid_not_settled')
+        time.sleep(interval)
 
 
 def parse_rows(text):
@@ -259,12 +303,16 @@ def check_selector_scope(root, kind, query, matcher, guard, driver, *, diagnosti
             raise ReviewRequired('selector_grid_missing_or_ambiguous')
         grid = grids[0]
         progress['phase'] = 'copy'
-        if grid_has_rows(grid.capture_as_image()) or grid_has_rows(grid.capture_as_image()):
-            driver.focus(grid)
-            copies = [driver.copy_rows(dialog, grid, pid), None]
-            time.sleep(0.3)
-            driver.focus(grid)
-            copies[1] = driver.copy_rows(dialog, grid, pid)
+        if _settled_has_rows(grid):
+            copies = [None, None]
+            for index in range(2):
+                if index:
+                    time.sleep(0.3)
+                driver.focus(grid)
+                if not grid_has_rows(grid.capture_as_image()):
+                    copies = [None, None]  # the list emptied after the filter finished: never Copy
+                    break
+                copies[index] = driver.copy_rows(dialog, grid, pid)
             if copies[0] != copies[1]:
                 raise ReviewRequired('selector_rows_unstable')
         else:  # empty result: never send Copy (Fakturama NPE); absence is the answer

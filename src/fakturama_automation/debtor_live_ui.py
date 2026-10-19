@@ -7,6 +7,7 @@ from .combo_ui import read_combo_options, select_combo_exact
 from .debtor_ui import DebtorMainAddressSession, DebtorMiscSession, _tab_items, _value
 from .domain import OrderInput
 from .errors import ReviewRequired
+from .keyboard_text import type_into
 from .finance import validate_order
 from .payment_ui import _payment_root
 from .selector_ui import exactly_one
@@ -163,7 +164,10 @@ def prepare_debtor_page_scope(root, source: OrderInput, expected_id, page, root_
         try:
             if current[role].iface_value.CurrentIsReadOnly:
                 raise ReviewRequired('debtor_prepare_field_read_only')
-            current[role].iface_value.SetValue(target[role])  # literal, no keys/clipboard
+            if role == 'company':  # the model takes this value only from key events
+                type_into(current[role], target[role])
+            else:
+                current[role].iface_value.SetValue(target[role])  # literal, no keys/clipboard
         except ReviewRequired:
             raise
         except Exception:
